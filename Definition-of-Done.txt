@@ -1,2 +1,3 @@
 - Code Quality: Code is complete, follows style guidelines, and is reviewed.
 - Functionality: The feature meets all acceptance criteria and works as intended.
+- No Bugs: All bugs are resolved before marking the feature as completed.
