@@ -4,7 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com.example'
+group = 'com.app.login'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -18,15 +18,31 @@ repositories {
 }
 
 dependencies {
+    // Spring Boot dependencies
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    runtimeOnly 'org.apache.tomcat.embed:tomcat-embed-jasper:10.1.29' // jsps
-    runtimeOnly 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.0' // helpful JSP tags
+
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // Spring Data JPA and Database (Choose one: H2 for in-memory testing, or MySQL/PostgreSQL)
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.h2database:h2'  // For in-memory DB during development
+    // runtimeOnly 'mysql:mysql-connector-java'  // Use if you need MySQL
+    // runtimeOnly 'org.postgresql:postgresql'  // Use if you need PostgreSQL
+
+    // JSP Support (if you're using JSPs for views, otherwise remove)
+    runtimeOnly 'org.apache.tomcat.embed:tomcat-embed-jasper:10.1.29'
+    runtimeOnly 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.0'
+
+    // Development tools
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // Testing dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'  // Security testing
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
