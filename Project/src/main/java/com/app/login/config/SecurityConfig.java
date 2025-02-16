@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -29,16 +30,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // Disable CSRF (for testing; use in production carefully)
+                .csrf(csrf -> csrf.disable())  // Disable CSRF (for testing; enable in production)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register", "/auth/login").permitAll()
-                        .requestMatchers("/dashboard").authenticated()
+                        .requestMatchers("/", "/home", "/register", "/auth/register", "/login").permitAll()
+                        .requestMatchers("/dashboard", "/profile").authenticated()
                         .anyRequest().authenticated()
                 )
-                .formLogin(login -> login.disable())  // Disable default login form to prevent conflicts
+                .formLogin(login -> login
+                        .loginPage("/login")  // Set custom JSP login page
+                        .defaultSuccessUrl("/dashboard", true)  // Redirect after successful login
+                        .failureUrl("/login?error=true")  // Show error message on failed login
+                        .permitAll()
+                )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/auth/login?logout=true")
+                        .logoutSuccessUrl("/home")  // Redirect to home after logout
                         .permitAll()
                 );
 

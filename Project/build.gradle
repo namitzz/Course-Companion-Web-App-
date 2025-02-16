@@ -28,6 +28,7 @@ dependencies {
 
     // Spring Data JPA and Database (Choose one: H2 for in-memory testing, or MySQL/PostgreSQL)
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     runtimeOnly 'com.h2database:h2'  // For in-memory DB during development
     // runtimeOnly 'mysql:mysql-connector-java'  // Use if you need MySQL
     // runtimeOnly 'org.postgresql:postgresql'  // Use if you need PostgreSQL
