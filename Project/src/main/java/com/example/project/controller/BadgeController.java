@@ -1,18 +1,43 @@
 package com.example.project.controller;
 
+import com.example.project.model.User;
 import com.example.project.service.BadgeService;
+import com.example.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@RestController
-@RequestMapping("/api/badges")
+@Controller
 public class BadgeController {
 
     @Autowired
     private BadgeService badgeService;
 
-    @PostMapping("/{userId}/complete-course/{courseId}")
-    public void completeCourse(@PathVariable Long userId, @PathVariable Long courseId) {
+    @Autowired
+    private UserService userService;
+
+    // Display the user's badges and course completion status
+    @GetMapping("/badges")
+    public String viewBadges(@RequestParam Long userId, Model model) {
+        // Fetch the user and their badges
+        User user = userService.getUserById(userId);
+        model.addAttribute("user", user);
+        model.addAttribute("badges", user.getBadges());
+        model.addAttribute("completedCourses", user.getCompletedCourses());
+
+        return "badges"; // This refers to the JSP file (badges.jsp)
+    }
+
+    // Handle course completion and badge awarding
+    @PostMapping("/complete-course")
+    public String completeCourse(@RequestParam Long userId, @RequestParam Long courseId, Model model) {
+        // Mark the course as completed and check for badges
         badgeService.completeCourse(userId, courseId);
+
+        // Redirect to the badges page to show updated information
+        return "redirect:/badges?userId=" + userId;
     }
 }
