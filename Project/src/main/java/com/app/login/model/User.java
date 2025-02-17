@@ -18,53 +18,41 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER, targetClass = String.class)
-    @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id")  )
     @Column(name = "role")
-    private Set<String> roles = new HashSet<>();  // Example: ["ROLE_USER", "ROLE_ADMIN"]
+    private Set<String> roles = new HashSet<>();
 
     public User() {}
 
     public User(String username, String password, Set<String> roles) {
         this.username = username;
         this.password = password;
-        this.roles = new HashSet<>(roles); // Ensures a concrete type
+        this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();
     }
 
-    public static User create(String username, String password, Set<String> roles) {
-        return new User(username, password, roles);
+    @PrePersist
+    @PreUpdate
+    private void ensureRolesNotNull() {
+        if (this.roles == null) {
+            this.roles = new HashSet<>();
+        }
     }
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 
-    public String getUsername() {
-        return username;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Set<String> getRoles() {
-        return roles;
-    }
-
+    public Set<String> getRoles() { return roles; }
     public void setRoles(Set<String> roles) {
-        this.roles = new HashSet<>(roles);
+        this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();
     }
 }

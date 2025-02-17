@@ -17,7 +17,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    // Constructor-based dependency injection (recommended)
     @Autowired
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -25,16 +24,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Ensure correct exception throwing without extra characters
+
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        // Ensure roles are correctly mapped to authorities
         List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
-                .map(SimpleGrantedAuthority::new) // No need for lambda (role -> new SimpleGrantedAuthority(role))
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        // Return Spring Security's UserDetails object
+
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword())

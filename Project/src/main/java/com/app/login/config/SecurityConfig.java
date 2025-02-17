@@ -1,50 +1,37 @@
 package com.app.login.config;
 
-import com.app.login.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final CustomUserDetailsService customUserDetailsService;
-
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
-        this.customUserDetailsService = customUserDetailsService;
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return customUserDetailsService;
-    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // Disable CSRF (for testing; enable in production)
+                .csrf(httpSecurity -> httpSecurity.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/register", "/auth/register", "/login").permitAll()
+                        .requestMatchers("/auth/register", "/auth/login", "/h2-console/**").permitAll()
                         .requestMatchers("/dashboard", "/profile").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
-                        .loginPage("/login")  // Set custom JSP login page
-                        .defaultSuccessUrl("/dashboard", true)  // Redirect after successful login
-                        .failureUrl("/login?error=true")  // Show error message on failed login
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/dashboard", true)
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/home")  // Redirect to home after logout
+                        .logoutSuccessUrl("/auth/login?logout=true")
                         .permitAll()
                 );
 

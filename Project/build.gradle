@@ -49,3 +49,8 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+dependencies {
+    implementation 'org.springframework.security:spring-security-taglibs:5.8.0' // Use latest version
+    implementation 'javax.servlet:jstl:1.2' // Ensure JSTL is also included
+}
+

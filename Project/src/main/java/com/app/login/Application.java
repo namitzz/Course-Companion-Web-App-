@@ -16,7 +16,6 @@ public class Application implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Constructor-based dependency injection
     @Autowired
     public Application(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -29,13 +28,15 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (userRepository.findByUsername("admin").isEmpty()) {
-            User admin = new User("admin", passwordEncoder.encode("password"), Set.of("ROLE_ADMIN"));
-            userRepository.save(admin);
-        }
-        if (userRepository.findByUsername("user").isEmpty()) {
-            User user = new User("user", passwordEncoder.encode("password"), Set.of("ROLE_USER"));
+        createDefaultUser("admin", "admin123", Set.of("ROLE_ADMIN"));
+        createDefaultUser("user", "user123", Set.of("ROLE_USER"));
+    }
+
+    private void createDefaultUser(String username, String password, Set<String> roles) {
+        if (userRepository.findByUsername(username).isEmpty()) {
+            User user = new User(username, passwordEncoder.encode(password), roles);
             userRepository.save(user);
+            System.out.println("Created default user: " + username);
         }
     }
 }

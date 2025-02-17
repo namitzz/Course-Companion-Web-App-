@@ -3,42 +3,48 @@ package com.app.login.controller;
 import com.app.login.model.User;
 import com.app.login.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.Optional;
-
+import java.util.Set;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
-        // Check if user already exists
-        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
-        if (existingUser.isPresent()) {
-            return new ResponseEntity<>("Error: Username already exists!", HttpStatus.BAD_REQUEST);
+    public String registerUser(@RequestParam String username, @RequestParam String password) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            return "Error: Username already taken!";
         }
 
-        // Encrypt password and set role
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton("ROLE_USER"));
-        userRepository.save(user);
-
-        return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
+        User newUser = new User(username, passwordEncoder.encode(password), Set.of("ROLE_USER"));
+        userRepository.save(newUser);
+        return "User registered successfully!";
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login() {
-        return new ResponseEntity<>("Login successful. Use authentication to proceed.", HttpStatus.OK);
+    public String loginUser(@RequestParam String username, @RequestParam String password) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+
+        if (userOptional.isEmpty()) {
+            return "Error: User not found!";
+        }
+
+        User user = userOptional.get();
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            return "Error: Incorrect password!";
+        }
+
+        return "Login successful! Welcome, " + username;
     }
 }
