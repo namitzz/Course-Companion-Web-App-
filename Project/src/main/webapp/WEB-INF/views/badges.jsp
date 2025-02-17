@@ -8,13 +8,6 @@
 <body>
 <h1>Welcome, ${user.username}!</h1>
 
-<!-- Display error messages -->
-<c:if test="${not empty error}">
-    <div style="color: red;">
-        Error: ${error}
-    </div>
-</c:if>
-
 <h2>Your Badges</h2>
 <ul>
     <c:forEach items="${badges}" var="badge">
@@ -36,5 +29,13 @@
     <input type="text" id="courseId" name="courseId" required>
     <button type="submit">Complete Course</button>
 </form>
+
+<!-- Display error messages -->
+<c:if test="${not empty error}">
+    <div style="color: red;">
+        Error: ${error}
+    </div>
+</c:if>
+
 </body>
 </html>
