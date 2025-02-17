@@ -32,7 +32,7 @@ public class BadgeController {
             model.addAttribute("error", e.getMessage());
         }
 
-        return "badges"; // This refers to the JSP file (badges.jsp)
+        return "badges";
     }
 
     // Handle course completion and badge awarding
