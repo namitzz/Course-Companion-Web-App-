@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -18,8 +20,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // Allow access to registration, login, and H2 console
-                        .requestMatchers("/auth/register", "/auth/login", "/h2-console/**").permitAll()
+                        // Allow access to registration, login, and static resources
+                        .requestMatchers("/auth/register", "/auth/login", "/static/**", "/css/**", "/js/**", "/images/**").permitAll()
                         // Authenticate these URLs
                         .requestMatchers("/dashboard", "/profile").authenticated()
                         // Any other request needs authentication
@@ -27,19 +29,29 @@ public class SecurityConfig {
                 )
                 .formLogin(login -> login
                         // Custom login page URL
-                        .loginPage("/login")
+                        .loginPage("/auth/login")
                         // Default successful login redirect
                         .defaultSuccessUrl("/dashboard", true)
                         // Custom failure URL
-                        .failureUrl("/login?error=true")
+                        .failureUrl("/auth/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
                         // Custom logout URL
-                        .logoutUrl("/logout")
+                        .logoutUrl("/auth/logout")
                         // Redirect after logout
                         .logoutSuccessUrl("/auth/login?logout=true")
                         .permitAll()
+                )
+                .csrf(csrf -> csrf
+                        // Disable CSRF for H2 console (if used)
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))
+                )
+                .headers(headers -> headers
+                        // Configure X-Frame-Options to allow embedding in iframes (for H2 console)
+                        .frameOptions(frameOptions -> frameOptions.disable())
+                        // Add XSS protection header
+                        .xssProtection(xss -> xss.headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK))
                 );
 
         return http.build();

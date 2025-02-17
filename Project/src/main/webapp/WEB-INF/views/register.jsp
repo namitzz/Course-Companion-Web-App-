@@ -11,7 +11,7 @@
 <div class="login-container">
     <h2>Register</h2>
     <!-- Registration Form -->
-    <form action="<%= request.getContextPath() %>/auth/register" method="post">
+    <form action="${pageContext.request.contextPath}/auth/register" method="post">
         <label for="username">Username:</label>
         <input type="text" name="username" id="username" required />
 
@@ -22,13 +22,13 @@
         <input type="password" name="confirmPassword" id="confirmPassword" required />
 
         <!-- CSRF Token (Spring Security) -->
-        <input type="hidden" name="_csrf" value="${_csrf.token}" />
+        <<input type="hidden" name="_csrf" value="${_csrf.token}" />
 
         <!-- Register Button -->
         <button type="submit" class="login-btn">Register</button>
 
         <!-- Login Link -->
-        <a class="hyperlink" href="/login">Already have an account? Login now!</a>
+        <a class="hyperlink" href="${pageContext.request.contextPath}/auth/login">Already have an account? Login now!</a>
     </form>
 </div>
 
