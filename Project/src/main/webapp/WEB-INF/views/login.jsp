@@ -1,32 +1,36 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Login</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
+    <!-- Corrected CSS path to resources/static -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css">
 </head>
 <body>
 
-<h2>Login</h2>
-<form action="<%= request.getContextPath() %>/auth/login" method="post">
+<div class="login-container">
+    <h2>Login</h2>
+    <!-- Login Form -->
+    <form action="<%= request.getContextPath() %>/login" method="post">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required />
 
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required />
 
-    <label for="username">Username:</label>
-    <input id="username" name="username" type="text" required placeholder="Enter your username">
+        <!-- Forgot Password Link -->
+        <a class="hyperlink" href="/forgot-password">Forgot your password?</a>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required minlength="8" autocomplete="off" placeholder="Enter your password">
+        <!-- CSRF Token (Spring Security) -->
+        <input type="hidden" name="_csrf" value="${_csrf.token}" />
 
+        <!-- Login Button -->
+        <button type="submit" class="login-btn">Login</button>
 
-    <div style="display: flex; gap: 10px;">
-        <button type="submit" style="background: #007bff; color: white;">Sign In</button>
-        <a href="<%= request.getContextPath() %>/auth/register">
-            <button type="button" style="background: #28a745; color: white;">Sign Up</button>
-        </a>
-    </div>
-</form>
+        <!-- Register Link -->
+        <a class="hyperlink" href="/register">Don't have an account? Register now!</a>
+    </form>
+</div>
 
 </body>
 </html>

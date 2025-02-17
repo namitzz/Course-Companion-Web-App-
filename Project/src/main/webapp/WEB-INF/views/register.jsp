@@ -3,27 +3,34 @@
 <html lang="en">
 <head>
     <title>Register</title>
-
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
-
+    <!-- Corrected CSS path to resources/static -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css">
 </head>
 <body>
 
-<h2>Register</h2>
-<form action="<%= request.getContextPath() %>/auth/register" method="post">
-    <input type="hidden" name="_csrf" value="${_csrf.token}">
+<div class="login-container">
+    <h2>Register</h2>
+    <!-- Registration Form -->
+    <form action="<%= request.getContextPath() %>/auth/register" method="post">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required />
 
-    <label for="username" aria-label="Username">Username:</label>
-    <input id="username" name="username" type="text" required placeholder="Enter your username">
-    <br>
-    <label for="password" aria-label="Password">Password:</label>
-    <input type="password" id="password" name="password" required minlength="8" autocomplete="off" placeholder="Enter your password">
-    <br>
-    <button type="submit">Register</button>
-</form>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required />
 
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" name="confirmPassword" id="confirmPassword" required />
 
-<p>Already have an account? <a href="<%= request.getContextPath() %>/login">Login</a></p>
+        <!-- CSRF Token (Spring Security) -->
+        <input type="hidden" name="_csrf" value="${_csrf.token}" />
+
+        <!-- Register Button -->
+        <button type="submit" class="login-btn">Register</button>
+
+        <!-- Login Link -->
+        <a class="hyperlink" href="/login">Already have an account? Login now!</a>
+    </form>
+</div>
 
 </body>
 </html>
