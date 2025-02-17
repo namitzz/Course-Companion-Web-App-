@@ -37,10 +37,23 @@ public class BadgeController {
 
     // Handle course completion and badge awarding
     @PostMapping("/complete-course")
-    public String completeCourse(@RequestParam Long userId, @RequestParam Long courseId, Model model) {
+    public String completeCourse(@RequestParam Long userId, @RequestParam String courseId, Model model) {
         try {
+            // Validate courseId
+            if (courseId == null || courseId.trim().isEmpty()) {
+                throw new RuntimeException("Course ID cannot be empty.");
+            }
+
+            // Convert courseId to Long
+            Long courseIdLong;
+            try {
+                courseIdLong = Long.parseLong(courseId.trim());
+            } catch (NumberFormatException e) {
+                throw new RuntimeException("Invalid Course ID. Please enter a valid number.");
+            }
+
             // Mark the course as completed and check for badges
-            badgeService.completeCourse(userId, courseId);
+            badgeService.completeCourse(userId, courseIdLong);
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
             return viewBadges(userId, model); // Return to the badges page with an error message
