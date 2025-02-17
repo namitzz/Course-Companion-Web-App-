@@ -4,7 +4,7 @@
 <head>
     <title>Register</title>
 
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/style.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
 
 </head>
 <body>

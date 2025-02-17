@@ -4,8 +4,7 @@
 <html lang="en">
 <head>
     <title>Login</title>
-
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/style.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
 </head>
 <body>
 
