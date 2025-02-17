@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Courses</title>
     <style>
+        /* CSS styles */
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -36,13 +37,13 @@
     </style>
 </head>
 <body>
-
+<!-- HTML content -->
 <h2>Course Search</h2>
 
 
-
+<!-- Search form -->
 <form action="/search" method="get">
-    <input type="text" name="keyword" placeholder="Enter keyword...">
+    <input type="text" name="keyword" placeholder="Enter keyword..." required>
     <select name="category">
         <option value="">All Categories</option>
         <option value="Programming">Programming</option>
@@ -51,11 +52,12 @@
         <option value="Data Science">Data Science</option>
         <option value="Security">Security</option>
     </select>
+    <!-- Submit button -->
     <button type="submit">Search</button>
 </form>
 
 
-
+<!-- Results -->
 <h3>Results:</h3>
 
 <ul>

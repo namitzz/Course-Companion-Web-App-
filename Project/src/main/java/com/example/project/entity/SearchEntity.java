@@ -1,19 +1,23 @@
 package com.example.project.entity;
 
+// Imported packages
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
 public class SearchEntity {
+    // Fields
     @Id
     private Long id;
     private String name;
     private String description;
     private String category;
 
+    // Default constructor
     public SearchEntity() {
     }
 
+    // Constructor
     public SearchEntity(Long id, String name, String description, String category) {
         this.id = id;
         this.name = name;
@@ -21,6 +25,7 @@ public class SearchEntity {
         this.category = category;
     }
 
+    // Getters and setters
     public Long getId() {
         return id;
     }

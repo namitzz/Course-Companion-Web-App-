@@ -1,5 +1,6 @@
 package com.example.project.controller;
 
+// Imported packages
 import com.example.project.entity.SearchEntity;
 import com.example.project.service.FilterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,13 @@ import java.util.List;
 @Controller
 public class SearchController {
 
+    // Autowired FilterService
     @Autowired
     private FilterService filterService;
 
+    // Handles GET request for /search
     @GetMapping("/search")
+    // Method to search for results
     public String searchResults(@RequestParam(required = false) String keyword,
                                 @RequestParam(required = false) String category,
                                 Model model) {
@@ -23,7 +27,9 @@ public class SearchController {
                 ? filterService.filterResults(keyword, category)
                 : List.of();
 
+        // Add results to model
         model.addAttribute("results", results);
+        // Return search.html
         return "search";
     }
 }
