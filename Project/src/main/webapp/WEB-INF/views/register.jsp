@@ -3,7 +3,8 @@
 <html lang="en">
 <head>
     <title>Register</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/styles.css">
 </head>
 <body>
 <div class="login-container">
@@ -11,12 +12,16 @@
     <form action="${pageContext.request.contextPath}/auth/register" method="post">
         <label for="username">Username:</label>
         <input type="text" name="username" id="username" required />
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required />
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" required />
         <label for="confirmPassword">Confirm Password:</label>
         <input type="password" name="confirmPassword" id="confirmPassword" required />
-        <button type="submit" class="btn-signin">Register</button>
-        <a href="${pageContext.request.contextPath}/auth/login" class="btn-signup">Back to Login</a>
+        <div class="button-group">
+            <button type="submit" class="btn-signin">Register</button>
+            <a href="${pageContext.request.contextPath}/auth/login" class="btn-signup">Back to Login</a>
+        </div>
     </form>
 </div>
 </body>

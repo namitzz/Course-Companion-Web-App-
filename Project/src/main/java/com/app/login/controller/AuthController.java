@@ -13,6 +13,7 @@ import java.util.Set;
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -36,18 +37,14 @@ public class AuthController {
 
     // Handle Register Form Submission (POST Request)
     @PostMapping("/register")
-    public String registerUser(@RequestParam String username, @RequestParam String password, @RequestParam String confirmPassword) {
-        if (!password.equals(confirmPassword)) {
-            return "redirect:/auth/register?error=password_mismatch";
-        }
-
+    public String registerUser(@RequestParam String username, @RequestParam String password) {
         if (userRepository.findByUsername(username).isPresent()) {
-            return "redirect:/auth/register?error=username_exists";
+            return "error";  // Return an error view (customize this if needed)
         }
 
         User newUser = new User(username, passwordEncoder.encode(password), Set.of("ROLE_USER"));
         userRepository.save(newUser);
-        return "redirect:/auth/login?success=registration_successful";
+        return "redirect:/auth/login";  // Redirect to login after successful registration
     }
 
     // Handle Login Form Submission (POST Request)
@@ -56,14 +53,14 @@ public class AuthController {
         Optional<User> userOptional = userRepository.findByUsername(username);
 
         if (userOptional.isEmpty()) {
-            return "redirect:/auth/login?error=user_not_found";
+            return "error";  // Return an error view if user is not found
         }
 
         User user = userOptional.get();
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            return "redirect:/auth/login?error=invalid_password";
+            return "error";  // Return an error view if the password is incorrect
         }
 
-        return "redirect:/dashboard";
+        return "redirect:/auth/login";  // Redirect to login after successful login
     }
 }

@@ -1,6 +1,6 @@
 /* General Styling */
 body {
-    font-family: 'Orbitron', sans-serif; /* Ensure Orbitron font is imported */
+    font-family: 'Orbitron', sans-serif; /* Sci-Fi Font */
     background: radial-gradient(circle, #050505 30%, #000000 100%);
     color: #00ffc8;
     display: flex;
@@ -75,20 +75,20 @@ button, .btn-signup {
     transition: all 0.3s ease-in-out;
 }
 
-/* Sign In Button */
+/* Register Button */
 .btn-signin {
     background: linear-gradient(90deg, #0066ff, #00bfff);
     color: white;
     box-shadow: 0 0 10px #00bfff;
 }
 
-/* Sign In Hover */
+/* Register Hover */
 .btn-signin:hover {
     background: linear-gradient(90deg, #0052cc, #0088ff);
     box-shadow: 0 0 15px #00bfff;
 }
 
-/* Sign Up Button */
+/* Back to Login Button */
 .btn-signup {
     background: linear-gradient(90deg, #00ff66, #00cc44);
     color: white;
@@ -100,7 +100,7 @@ button, .btn-signup {
     box-shadow: 0 0 10px #00ff66;
 }
 
-/* Sign Up Hover */
+/* Back to Login Hover */
 .btn-signup:hover {
     background: linear-gradient(90deg, #00cc44, #009933);
     box-shadow: 0 0 15px #00ff66;
