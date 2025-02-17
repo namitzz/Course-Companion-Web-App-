@@ -13,7 +13,6 @@ import java.util.Set;
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
-
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -39,16 +38,16 @@ public class AuthController {
     @PostMapping("/register")
     public String registerUser(@RequestParam String username, @RequestParam String password, @RequestParam String confirmPassword) {
         if (!password.equals(confirmPassword)) {
-            return "error";  // Return an error view if passwords do not match
+            return "redirect:/auth/register?error=password_mismatch";
         }
 
         if (userRepository.findByUsername(username).isPresent()) {
-            return "error";  // Return an error view if user already exists
+            return "redirect:/auth/register?error=username_exists";
         }
 
         User newUser = new User(username, passwordEncoder.encode(password), Set.of("ROLE_USER"));
         userRepository.save(newUser);
-        return "redirect:/auth/login";  // Redirect to login after registration
+        return "redirect:/auth/login?success=registration_successful";
     }
 
     // Handle Login Form Submission (POST Request)
@@ -57,14 +56,14 @@ public class AuthController {
         Optional<User> userOptional = userRepository.findByUsername(username);
 
         if (userOptional.isEmpty()) {
-            return "error";  // Return an error view if user is not found
+            return "redirect:/auth/login?error=user_not_found";
         }
 
         User user = userOptional.get();
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            return "error";  // Return an error view if the password is incorrect
+            return "redirect:/auth/login?error=invalid_password";
         }
 
-        return "redirect:/dashboard";  // Redirect to dashboard after successful login
+        return "redirect:/dashboard";
     }
 }
