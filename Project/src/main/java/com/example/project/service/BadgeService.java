@@ -23,14 +23,24 @@ public class BadgeService {
     private BadgeRepository badgeRepository;
 
     public void completeCourse(Long userId, Long courseId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        // Check if the user has already completed this course
+        if (completedCourseRepository.existsByUserAndCourseId(user, courseId)) {
+            throw new RuntimeException("Course already completed by the user");
+        }
+
+        // Mark the course as completed
         CompletedCourse completedCourse = new CompletedCourse();
         completedCourse.setUser(user);
         completedCourse.setCourse(course);
         completedCourseRepository.save(completedCourse);
 
+        // Check and award badges
         checkAndAwardBadges(user);
     }
 

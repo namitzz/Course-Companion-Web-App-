@@ -8,6 +8,13 @@
 <body>
 <h1>Welcome, ${user.username}!</h1>
 
+<!-- Display error messages -->
+<c:if test="${not empty error}">
+    <div style="color: red;">
+        Error: ${error}
+    </div>
+</c:if>
+
 <h2>Your Badges</h2>
 <ul>
     <c:forEach items="${badges}" var="badge">
