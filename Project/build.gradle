@@ -34,8 +34,9 @@ dependencies {
     // runtimeOnly 'org.postgresql:postgresql'  // Use if you need PostgreSQL
 
     // JSP Support (if you're using JSPs for views, otherwise remove)
-    runtimeOnly 'org.apache.tomcat.embed:tomcat-embed-jasper:10.1.29'
-    runtimeOnly 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.0'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper' // Use implementation instead of runtimeOnly
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api' // Use Jakarta namespace for JSTL
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl' // Use Jakarta namespace for JSTL
 
     // Development tools
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -49,7 +50,3 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
-dependencies {
-     implementation 'javax.servlet:jstl:1.2' // Ensure JSTL is also included
-}
-

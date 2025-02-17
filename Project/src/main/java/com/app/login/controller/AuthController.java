@@ -26,25 +26,25 @@ public class AuthController {
     // Show Register Page (GET Request)
     @GetMapping("/register")
     public String showRegisterPage() {
-        return "register";  // Return the "register.jsp" page
+        return "register.jsp";  // Return the "register.jsp" page
     }
 
     // Show Login Page (GET Request)
     @GetMapping("/login")
     public String showLoginPage() {
-        return "login";  // Return the "login.jsp" page
+        return "login.jsp";  // Return the "login.jsp" page
     }
 
     // Handle Register Form Submission (POST Request)
     @PostMapping("/register")
     public String registerUser(@RequestParam String username, @RequestParam String password) {
         if (userRepository.findByUsername(username).isPresent()) {
-            return "error";  // Return an error view (customize this if needed)
+            return "redirect:/auth/register?error=username_exists";  // Redirect with error message
         }
 
         User newUser = new User(username, passwordEncoder.encode(password), Set.of("ROLE_USER"));
         userRepository.save(newUser);
-        return "redirect:/auth/login";  // Redirect to login after successful registration
+        return "redirect:/auth/login?success=registration_successful";  //
     }
 
     // Handle Login Form Submission (POST Request)
@@ -53,14 +53,14 @@ public class AuthController {
         Optional<User> userOptional = userRepository.findByUsername(username);
 
         if (userOptional.isEmpty()) {
-            return "error";  // Return an error view if user is not found
+            return "redirect:/auth/login?error=user_not_found";  // Redirect with error message
         }
 
         User user = userOptional.get();
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            return "error";  // Return an error view if the password is incorrect
+            return "redirect:/auth/login?error=invalid_password";  // Redirect with error message
         }
 
-        return "redirect:/auth/login";  // Redirect to login after successful login
+        return "redirect:/dashboard";  // Redirect to dashboard after successful login
     }
 }
