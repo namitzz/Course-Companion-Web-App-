@@ -64,7 +64,7 @@ input:focus {
 }
 
 /* Buttons */
-button, .btn-signup {
+button {
     width: 48%;
     padding: 10px;
     border: none;
@@ -75,20 +75,19 @@ button, .btn-signup {
     transition: all 0.3s ease-in-out;
 }
 
-/* Register Button */
+/* Sign-In Button */
 .btn-signin {
     background: linear-gradient(90deg, #0066ff, #00bfff);
     color: white;
     box-shadow: 0 0 10px #00bfff;
 }
 
-/* Register Hover */
 .btn-signin:hover {
     background: linear-gradient(90deg, #0052cc, #0088ff);
     box-shadow: 0 0 15px #00bfff;
 }
 
-/* Back to Login Button */
+/* Sign-Up Button */
 .btn-signup {
     background: linear-gradient(90deg, #00ff66, #00cc44);
     color: white;
@@ -100,7 +99,6 @@ button, .btn-signup {
     box-shadow: 0 0 10px #00ff66;
 }
 
-/* Back to Login Hover */
 .btn-signup:hover {
     background: linear-gradient(90deg, #00cc44, #009933);
     box-shadow: 0 0 15px #00ff66;
@@ -117,56 +115,4 @@ button, .btn-signup {
     100% {
         text-shadow: 0 0 5px #00ffc8, 0 0 10px #00ffc8;
     }
-}
-
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    text-align: center;
-    margin: 20px;
-}
-
-.container {
-    background: white;
-    padding: 20px;
-    width: 50%;
-    margin: auto;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-h1, h2 {
-    color: #333;
-}
-
-table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: center;
-}
-
-.btn {
-    display: inline-block;
-    padding: 8px 12px;
-    margin: 5px;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.add { background: #28a745; }
-.edit { background: #ffc107; }
-.delete { background: #dc3545; }
-.update { background: #007bff; }
-.home { background: #6c757d; }
-
-.btn:hover {
-    opacity: 0.8;
 }

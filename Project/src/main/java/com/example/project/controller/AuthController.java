@@ -27,13 +27,13 @@ public class AuthController {
     // Show Register Page (GET Request)
     @GetMapping("/register")
     public String showRegisterPage() {
-        return "register";  // Return the "register.jsp" page
+        return "register";  // Returns the "register.jsp" page
     }
 
     // Show Login Page (GET Request)
     @GetMapping("/login")
     public String showLoginPage() {
-        return "login";  // Return the "login.jsp" page
+        return "login";  // Returns the "login.jsp" page
     }
 
     // Handle Register Form Submission (POST Request)
@@ -48,20 +48,19 @@ public class AuthController {
         return "redirect:/auth/login?success=registration_successful";  //
     }
 
-    // Handle Login Form Submission (POST Request)
+    // ✅ FIXED: PostMapping should be just "/login" (Not "/auth/login")
     @PostMapping("/login")
-    public String loginUser(@RequestParam String username, @RequestParam String password) {
+    public String login(@RequestParam String username, @RequestParam String password, HttpSession session) {
         Optional<UserInfo> userOptional = userInfoRepository.findByUsername(username);
 
-        if (userOptional.isEmpty()) {
-            return "redirect:/auth/login?error=user_not_found";  // Redirect with error message
+        if (userOptional.isPresent()) {
+            UserInfo user = userOptional.get();
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                session.setAttribute("user", username);  // Store user in session
+                return "redirect:/dashboard";  // Redirect to dashboard on success
+            }
         }
 
-        UserInfo userInfo = userOptional.get();
-        if (!passwordEncoder.matches(password, userInfo.getPassword())) {
-            return "redirect:/auth/login?error=invalid_password";  // Redirect with error message
-        }
-
-        return "redirect:/dashboard";  // Redirect to dashboard after successful login
+        return "redirect:/auth/login?error=true";  // Redirect back to login with error
     }
 }
