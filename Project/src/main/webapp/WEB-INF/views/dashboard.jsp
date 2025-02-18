@@ -2,22 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Dashboard</title>
-    <script>
-        // Redirect users who are not logged in
-        if (!localStorage.getItem("user")) {
-            window.location.href = "login.jsp";
-        }
+    <title>dashboard</title>
 
-        function logout() {
-            localStorage.removeItem("user");
-            window.location.href = "login.jsp";
-        }
-    </script>
 </head>
 <body>
-<h2>Welcome to the Dashboard</h2>
-<p>Hello, <script>document.write(localStorage.getItem("user"));</script>!</p>
-<button onclick="logout()">Logout</button>
+
+<h1> dashboard </h1>
 </body>
 </html>
