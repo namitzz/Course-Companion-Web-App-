@@ -18,18 +18,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
                 .authorizeHttpRequests(auth -> auth
-                        // Allow access to registration, login, and static resources
-                        .requestMatchers("/auth/register", "/auth/login", "/static/**", "/css/**", "/js/**", "/images/**").permitAll()
-                        // Authenticate these URLs
+
                         .requestMatchers("/dashboard", "/profile").authenticated()
-                        // Any other request needs authentication
-                        .anyRequest().authenticated()
-                )
+                                .anyRequest().permitAll()
+                                        )
                 .formLogin(login -> login
                         // Custom login page URL
                         .loginPage("/auth/login")
+                        .loginProcessingUrl("/auth/login")
                         // Default successful login redirect
                         .defaultSuccessUrl("/dashboard", true)
                         // Custom failure URL
@@ -41,6 +40,7 @@ public class SecurityConfig {
                         .logoutUrl("/auth/logout")
                         // Redirect after logout
                         .logoutSuccessUrl("/auth/login?logout=true")
+                        .invalidateHttpSession(true)
                         .permitAll()
                 )
                 .csrf(csrf -> csrf
@@ -55,6 +55,12 @@ public class SecurityConfig {
                 );
 
         return http.build();
+
+
+
+
+
+
     }
 
     @Bean

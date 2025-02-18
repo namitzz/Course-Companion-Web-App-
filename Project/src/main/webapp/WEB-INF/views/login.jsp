@@ -136,7 +136,7 @@
 
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" required />
-
+        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         <div class="button-group">
             <button type="submit" class="btn-signin">Sign In</button>
             <a href="${pageContext.request.contextPath}/auth/register" class="btn-signup">Register</a>

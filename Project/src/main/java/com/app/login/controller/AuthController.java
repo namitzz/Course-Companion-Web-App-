@@ -26,13 +26,13 @@ public class AuthController {
     // Show Register Page (GET Request)
     @GetMapping("/register")
     public String showRegisterPage() {
-        return "register.jsp";  // Return the "register.jsp" page
+        return "register";  // Return the "register.jsp" page
     }
 
     // Show Login Page (GET Request)
     @GetMapping("/login")
     public String showLoginPage() {
-        return "login.jsp";  // Return the "login.jsp" page
+        return "login";  // Return the "login.jsp" page
     }
 
     // Handle Register Form Submission (POST Request)
