@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Course Manager</title>
+    <link rel="stylesheet" th:href="@{/static/css/styles.css}">
+</head>
+<body>
+
+<div class="container">
+    <h1>Course Manager</h1>
+
+    <!-- Add Course Form -->
+    <h2>Add a New Course</h2>
+    <form action="/courses/add" method="post" class="form-container">
+        <label for="name">Course Name:</label>
+        <input type="text" id="name" name="name" required placeholder="Enter courseTracker name">
+
+        <label for="weight">Weight (%):</label>
+        <input type="number" id="weight" name="weight" min="1" max="100" required placeholder="Enter percentage">
+
+        <button type="submit" class="btn add">Add Course</button>
+    </form>
+
+    <!-- Course List -->
+    <h2>Existing Courses</h2>
+    <table>
+        <tr>
+            <th>Course Name</th>
+            <th>Weight (%)</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="courseTracker : ${courses}">
+            <td th:text="${courseTracker.name}"></td>
+            <td th:text="${courseTracker.weight}"></td>
+            <td>
+                <!-- Edit Button -->
+                <a th:href="@{/courses/edit/{id}(id=${courseTracker.id})}" class="btn edit">Edit</a>
+
+                <!-- Delete Button -->
+                <form th:action="@{/courses/delete/{id}(id=${courseTracker.id})}" method="post" class="inline-form">
+                    <button type="submit" class="btn delete">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <a href="/" class="btn home">Back to Home</a>
+</div>
+
+</body>
+</html>
