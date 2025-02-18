@@ -1,13 +1,13 @@
-package com.example.project;
+package com.example.gradetracker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProjectApplication {
+public class GradetrackerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ProjectApplication.class, args);
+        SpringApplication.run(GradetrackerApplication.class, args);
     }
 
 }

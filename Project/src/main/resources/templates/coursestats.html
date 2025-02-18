@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Stats</title>
+
+    <!-- Bootstrap for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js for graphical representation -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 30px;
+            background: #f8f9fa;
+        }
+        .stats-container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        canvas {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-4">
+    <h2 class="mb-3">Student Course Stats</h2>
+
+    <div class="stats-container p-4">
+        <p><strong>Completed Courses:</strong> <span id="completed" th:text="${completedCourses}"></span></p>
+        <p><strong>Active Courses:</strong> <span id="active" th:text="${activeCourses}"></span></p>
+        <p><strong>Total Study Time:</strong> <span id="studyTime" th:text="${totalTimeSpent}"></span> minutes</p>
+
+        <!-- Pie Chart -->
+        <canvas id="courseChart"></canvas>
+    </div>
+</div>
+
+<script>
+    // Fetching stats from Thymeleaf variables
+    const completedCourses = parseInt(document.getElementById("completed").innerText);
+    const activeCourses = parseInt(document.getElementById("active").innerText);
+    const totalTimeSpent = parseInt(document.getElementById("studyTime").innerText);
+
+    // Creating a Chart.js pie chart
+    const ctx = document.getElementById('courseChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Completed Courses', 'Active Courses'],
+            datasets: [{
+                data: [completedCourses, activeCourses],
+                backgroundColor: ['#4CAF50', '#FF9800'],
+                borderColor: ['#388E3C', '#F57C00'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

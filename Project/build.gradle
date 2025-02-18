@@ -18,15 +18,38 @@ repositories {
 }
 
 dependencies {
+    // Spring Boot dependencies
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // Spring Data JPA and Database (Choose one: H2 for in-memory testing, or MySQL/PostgreSQL)
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    runtimeOnly 'com.h2database:h2'  // For in-memory DB during development
+    // runtimeOnly 'mysql:mysql-connector-java'  // Use if you need MySQL
+    // runtimeOnly 'org.postgresql:postgresql'  // Use if you need PostgreSQL
+
+    // JSP Support (if you're using JSPs for views, otherwise remove)
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper' // Use implementation instead of runtimeOnly
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api' // Use Jakarta namespace for JSTL
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl' // Use Jakarta namespace for JSTL
+
+    // Development tools
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // Testing dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'  // Security testing
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    runtimeOnly 'org.apache.tomcat.embed:tomcat-embed-jasper:10.1.29' // jsps
     runtimeOnly 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.0' // helpful JSP tags
+
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 tasks.named('test') {

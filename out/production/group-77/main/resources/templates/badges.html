@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Badges</title>
+</head>
+<body>
+<h1>Welcome, <span th:text="${user.username}"></span>!</h1>
+
+<h2>Your Badges</h2>
+<ul>
+    <li th:each="badge : ${badges}" th:text="${badge.name}"></li>
+</ul>
+
+<h2>Completed Courses</h2>
+<ul>
+    <li th:each="course : ${completedCourses}" th:text="${course.course.title}"></li>
+</ul>
+
+<h2>Complete a Course</h2>
+<form action="/complete-course" method="post">
+    <input type="hidden" name="userId" th:value="${user.id}">
+    <label for="courseId">Course ID:</label>
+    <input type="text" id="courseId" name="courseId" required>
+    <button type="submit">Complete Course</button>
+</form>
+
+<!-- Display error messages -->
+<div th:if="${error}" style="color: red;">
+    Error: <span th:text="${error}"></span>
+</div>
+
+</body>
+</html>
