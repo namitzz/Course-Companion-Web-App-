@@ -1,10 +1,10 @@
-package com.example.gradetracker.model;
+package com.example.project.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity
-public class Course {
+public class CourseTracker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,9 +17,9 @@ public class Course {
     @Max(value = 100, message = "Weight cannot exceed 100%")
     private int weight;
 
-    public Course() {}
+    public CourseTracker() {}
 
-    public Course(String name, int weight) {
+    public CourseTracker(String name, int weight) {
         this.name = name;
         this.weight = weight;
     }

@@ -1,7 +1,7 @@
-package com.example.gradetracker.service;
+package com.example.project.service;
 
-import com.example.gradetracker.model.CourseTracker;
-import com.example.gradetracker.repository.CourseTrackerRepository;
+import com.example.project.model.CourseTracker;
+import com.example.project.repository.CourseTrackerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,10 +1,10 @@
-package com.example.gradetracker.controller;
+package com.example.project.controller;
 
-import com.example.gradetracker.model.CourseTracker;
-import com.example.gradetracker.service.CourseService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.example.project.model.CourseTracker;
+import com.example.project.service.CourseService;
 
 @Controller
 @RequestMapping("/courses")
