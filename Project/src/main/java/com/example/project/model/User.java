@@ -1,74 +1,48 @@
 package com.example.project.model;
 
+
 import jakarta.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class User {
+@Table(name = "users")
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String username;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<CompletedCourse> completedCourses = new HashSet<>();
+    @Column(nullable = false)
+    private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Badge> badges = new HashSet<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    private Set<String> roles = new HashSet<>();
 
-    // Getters and Setters
+    public User() {}
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
+    public User(String username, String password, Set<String> roles) {
         this.username = username;
+        this.password = password;
+        this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();
     }
 
-    public Set<CompletedCourse> getCompletedCourses() {
-        return completedCourses;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setCompletedCourses(Set<CompletedCourse> completedCourses) {
-        this.completedCourses = completedCourses;
-    }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 
-    public Set<Badge> getBadges() {
-        return badges;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public void setBadges(Set<Badge> badges) {
-        this.badges = badges;
-    }
-
-    public void addCompletedCourse(CompletedCourse completedCourse) {
-        this.completedCourses.add(completedCourse);
-        completedCourse.setUser(this);
-    }
-
-    public void removeCompletedCourse(CompletedCourse completedCourse) {
-        this.completedCourses.remove(completedCourse);
-        completedCourse.setUser(null);
-    }
-
-    public void addBadge(Badge badge) {
-        this.badges.add(badge);
-        badge.setUser(this);
-    }
-
-    public void removeBadge(Badge badge) {
-        this.badges.remove(badge);
-        badge.setUser(null);
+    public Set<String> getRoles() { return roles; }
+    public void setRoles(Set<String> roles) {
+        this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();
     }
 }

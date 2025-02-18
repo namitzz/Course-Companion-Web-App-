@@ -1,8 +1,9 @@
 package com.example.project.controller;
 
-import com.example.project.model.UserInfo;
-import com.example.project.repository.UserInfoRepository;
-import jakarta.servlet.http.HttpSession;
+import com.example.project.model.User;
+import com.example.project.repository.UserRepository;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -15,52 +16,53 @@ import java.util.Set;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserInfoRepository userInfoRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthController(UserInfoRepository userInfoRepository, PasswordEncoder passwordEncoder) {
-        this.userInfoRepository = userInfoRepository;
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     // Show Register Page (GET Request)
     @GetMapping("/register")
     public String showRegisterPage() {
-        return "register";  // Returns the "register.jsp" page
+        return "register";  // Return the "register.jsp" page
     }
 
     // Show Login Page (GET Request)
     @GetMapping("/login")
     public String showLoginPage() {
-        return "login";  // Returns the "login.jsp" page
+        return "login";  // Return the "login.jsp" page
     }
 
     // Handle Register Form Submission (POST Request)
     @PostMapping("/register")
     public String registerUser(@RequestParam String username, @RequestParam String password) {
-        if (userInfoRepository.findByUsername(username).isPresent()) {
+        if (userRepository.findByUsername(username).isPresent()) {
             return "redirect:/auth/register?error=username_exists";  // Redirect with error message
         }
 
-        UserInfo newUserInfo = new UserInfo(username, passwordEncoder.encode(password), Set.of("ROLE_USER"));
-        userInfoRepository.save(newUserInfo);
+        User newUser = new User(username, passwordEncoder.encode(password), Set.of("ROLE_USER"));
+        userRepository.save(newUser);
         return "redirect:/auth/login?success=registration_successful";  //
     }
 
-    // ✅ FIXED: PostMapping should be just "/login" (Not "/auth/login")
+    // Handle Login Form Submission (POST Request)
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, HttpSession session) {
-        Optional<UserInfo> userOptional = userInfoRepository.findByUsername(username);
+    public String loginUser(@RequestParam String username, @RequestParam String password) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
 
-        if (userOptional.isPresent()) {
-            UserInfo user = userOptional.get();
-            if (passwordEncoder.matches(password, user.getPassword())) {
-                session.setAttribute("user", username);  // Store user in session
-                return "redirect:/dashboard";  // Redirect to dashboard on success
-            }
+        if (userOptional.isEmpty()) {
+            return "redirect:/auth/login?error=user_not_found";  // Redirect with error message
         }
 
-        return "redirect:/auth/login?error=true";  // Redirect back to login with error
+        User user = userOptional.get();
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            return "redirect:/auth/login?error=invalid_password";  // Redirect with error message
+        }
+
+        return "redirect:/dashboard";  // Redirect to dashboard after successful login
     }
 }
