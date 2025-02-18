@@ -2,6 +2,7 @@ package com.example.project.controller;
 
 import com.example.project.model.UserInfo;
 import com.example.project.repository.UserInfoRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
