@@ -1,4 +1,4 @@
-package com.app.login.controller;
+package com.example.project.controller;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;

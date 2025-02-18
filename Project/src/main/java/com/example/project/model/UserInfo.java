@@ -1,4 +1,4 @@
-package com.app.login.model;
+package com.example.project.model;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class UserInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,9 +23,9 @@ public class User implements Serializable {
     @Column(name = "role")
     private Set<String> roles = new HashSet<>();
 
-    public User() {}
+    public UserInfo() {}
 
-    public User(String username, String password, Set<String> roles) {
+    public UserInfo(String username, String password, Set<String> roles) {
         this.username = username;
         this.password = password;
         this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();

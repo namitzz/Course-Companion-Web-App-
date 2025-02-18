@@ -1,7 +1,7 @@
-package com.app.login.service;
+package com.example.project.service;
 
-import com.app.login.model.User;
-import com.app.login.repository.UserRepository;
+import com.example.project.model.UserInfo;
+import com.example.project.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,27 +15,27 @@ import java.util.stream.Collectors;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserInfoRepository userInfoRepository;
 
     @Autowired
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public CustomUserDetailsService(UserInfoRepository userInfoRepository) {
+        this.userInfoRepository = userInfoRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(username)
+        UserInfo userInfo = userInfoRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
+        List<SimpleGrantedAuthority> authorities = userInfo.getRoles().stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
 
         return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
-                .password(user.getPassword())
+                .withUsername(userInfo.getUsername())
+                .password(userInfo.getPassword())
                 .authorities(authorities)
                 .build();
     }

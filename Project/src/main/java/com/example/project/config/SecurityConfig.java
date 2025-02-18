@@ -1,4 +1,4 @@
-package com.app.login.config;
+package com.example.project.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +23,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers("/dashboard", "/profile").authenticated()
-                                .anyRequest().permitAll()
-                                        )
+                        .anyRequest().permitAll()
+                )
                 .formLogin(login -> login
                         // Custom login page URL
                         .loginPage("/auth/login")

@@ -1,7 +1,7 @@
-package com.app.login;
+package com.example.project;
 
-import com.app.login.model.User;
-import com.app.login.repository.UserRepository;
+import com.example.project.model.UserInfo;
+import com.example.project.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,12 +13,12 @@ import java.util.Set;
 @SpringBootApplication
 public class Application implements CommandLineRunner {
 
-    private final UserRepository userRepository;
+    private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public Application(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+    public Application(UserInfoRepository userInfoRepository, PasswordEncoder passwordEncoder) {
+        this.userInfoRepository = userInfoRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -33,9 +33,9 @@ public class Application implements CommandLineRunner {
     }
 
     private void createDefaultUser(String username, String password, Set<String> roles) {
-        if (userRepository.findByUsername(username).isEmpty()) {
-            User user = new User(username, passwordEncoder.encode(password), roles);
-            userRepository.save(user);
+        if (userInfoRepository.findByUsername(username).isEmpty()) {
+            UserInfo userInfo = new UserInfo(username, passwordEncoder.encode(password), roles);
+            userInfoRepository.save(userInfo);
             System.out.println("Created default user: " + username);
         }
     }

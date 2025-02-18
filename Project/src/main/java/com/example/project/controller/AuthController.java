@@ -1,7 +1,7 @@
-package com.app.login.controller;
+package com.example.project.controller;
 
-import com.app.login.model.User;
-import com.app.login.repository.UserRepository;
+import com.example.project.model.UserInfo;
+import com.example.project.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -14,12 +14,12 @@ import java.util.Set;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserRepository userRepository;
+    private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+    public AuthController(UserInfoRepository userInfoRepository, PasswordEncoder passwordEncoder) {
+        this.userInfoRepository = userInfoRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -38,26 +38,26 @@ public class AuthController {
     // Handle Register Form Submission (POST Request)
     @PostMapping("/register")
     public String registerUser(@RequestParam String username, @RequestParam String password) {
-        if (userRepository.findByUsername(username).isPresent()) {
+        if (userInfoRepository.findByUsername(username).isPresent()) {
             return "redirect:/auth/register?error=username_exists";  // Redirect with error message
         }
 
-        User newUser = new User(username, passwordEncoder.encode(password), Set.of("ROLE_USER"));
-        userRepository.save(newUser);
+        UserInfo newUserInfo = new UserInfo(username, passwordEncoder.encode(password), Set.of("ROLE_USER"));
+        userInfoRepository.save(newUserInfo);
         return "redirect:/auth/login?success=registration_successful";  //
     }
 
     // Handle Login Form Submission (POST Request)
     @PostMapping("/login")
     public String loginUser(@RequestParam String username, @RequestParam String password) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
+        Optional<UserInfo> userOptional = userInfoRepository.findByUsername(username);
 
         if (userOptional.isEmpty()) {
             return "redirect:/auth/login?error=user_not_found";  // Redirect with error message
         }
 
-        User user = userOptional.get();
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        UserInfo userInfo = userOptional.get();
+        if (!passwordEncoder.matches(password, userInfo.getPassword())) {
             return "redirect:/auth/login?error=invalid_password";  // Redirect with error message
         }
 
