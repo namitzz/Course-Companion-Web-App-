@@ -24,15 +24,11 @@ public class User implements Serializable {
     @Column(name = "role")
     private Set<String> roles = new HashSet<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_badges", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "badge")
-    private Set<String> badges = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Badge> badges = new HashSet<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_completed_courses", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "completed_course")
-    private Set<String> completedCourses = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<CompletedCourse> completedCourses = new HashSet<>();
 
     public User() {}
 
@@ -56,13 +52,13 @@ public class User implements Serializable {
         this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();
     }
 
-    public Set<String> getBadges() { return badges; }
-    public void setBadges(Set<String> badges) {
-        this.badges = badges != null ? new HashSet<>(badges) : new HashSet<>();
+    public Set<Badge> getBadges() { return badges; }
+    public void setBadges(Set<Badge> badges) {
+        this.badges = badges;
     }
 
-    public Set<String> getCompletedCourses() { return completedCourses; }
-    public void setCompletedCourses(Set<String> completedCourses) {
-        this.completedCourses = completedCourses != null ? new HashSet<>(completedCourses) : new HashSet<>();
+    public Set<CompletedCourse> getCompletedCourses() { return completedCourses; }
+    public void setCompletedCourses(Set<CompletedCourse> completedCourses) {
+        this.completedCourses = completedCourses;
     }
 }
