@@ -28,19 +28,19 @@ public class SecurityConfig {
                 )
                 .formLogin(login -> login
                         // Custom login page URL
-                        .loginPage("/auth/login")
-                        .loginProcessingUrl("/auth/login")
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
                         // Default successful login redirect
                         .defaultSuccessUrl("/dashboard", true)
                         // Custom failure URL
-                        .failureUrl("/auth/login?error=true")
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
                         // Custom logout URL
-                        .logoutUrl("/auth/logout")
+                        .logoutUrl("/logout")
                         // Redirect after logout
-                        .logoutSuccessUrl("/auth/login?logout=true")
+                        .logoutSuccessUrl("/login?logout=true")
                         .invalidateHttpSession(true)
                         .permitAll()
                 )
