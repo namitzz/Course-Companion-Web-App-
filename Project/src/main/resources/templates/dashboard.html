@@ -1,57 +1,122 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         /* General Styling */
         body {
-            font-family: 'Orbitron', sans-serif; /* Sci-Fi Font */
-            background: radial-gradient(circle, #050505 30%, #000000 100%);
-            color: #00ffc8;
-            display: flex;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
         }
+
+        /* Sidebar */
         .sidebar {
             width: 250px;
             height: 100vh;
-            background: rgba(20, 20, 20, 0.9);
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
             color: white;
-            padding: 15px;
-            box-shadow: 0 0 20px rgba(0, 255, 200, 0.5);
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
         }
+
+        .sidebar h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .sidebar .nav-link {
+            color: white;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+        }
+
+        /* Content Area */
         .content {
-            flex-grow: 1;
+            margin-left: 250px;
             padding: 20px;
         }
+
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 20px;
+            border-radius: 10px;
+            animation: slideDown 0.5s ease-in-out;
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2575fc;
+        }
+
+        /* Cards */
         .card {
-            margin-bottom: 20px;
-            background: rgba(0, 255, 200, 0.1);
-            color: #00ffc8;
-            box-shadow: 0 0 10px #00ffc8;
-            transition: all 0.3s ease-in-out;
+            background: #ffffff;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
         }
+
         .card:hover {
-            box-shadow: 0 0 15px #00ffc8;
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
-        h2 {
-            font-size: 24px;
-            text-transform: uppercase;
-            color: #00ffc8;
-            text-shadow: 0 0 10px #00ffc8;
-            animation: neonGlow 1.5s infinite alternate;
+
+        .card-body {
+            padding: 20px;
         }
-        @keyframes neonGlow {
-            0% {
-                text-shadow: 0 0 5px #00ffc8, 0 0 10px #00ffc8;
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2575fc;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            color: #666;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
             }
-            50% {
-                text-shadow: 0 0 10px #00ffc8, 0 0 20px #00ffc8;
+            to {
+                opacity: 1;
             }
-            100% {
-                text-shadow: 0 0 5px #00ffc8, 0 0 10px #00ffc8;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
             }
         }
     </style>
@@ -60,15 +125,15 @@
 <div class="sidebar">
     <h2>Course Dashboard</h2>
     <ul class="nav flex-column">
-        <li class="nav-item"><a href="#" class="nav-link text-light">Home</a></li>
-        <li class="nav-item"><a href="#" class="nav-link text-light">Current Courses</a></li>
-        <li class="nav-item"><a href="#" class="nav-link text-light">Find New Courses</a></li>
-        <li class="nav-item"><a href="#" class="nav-link text-light">Settings</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Current Courses</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Find New Courses</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Settings</a></li>
     </ul>
 </div>
 <div class="content">
-    <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h1">Welcome to the Course Dashboard</span>
+    <nav class="navbar navbar-light">
+        <span class="navbar-brand">Welcome to the Course Dashboard</span>
     </nav>
     <div class="container mt-4">
         <div class="row">
@@ -99,5 +164,6 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
