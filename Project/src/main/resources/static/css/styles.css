@@ -1,8 +1,8 @@
 /* General Styling */
 body {
-    font-family: 'Orbitron', sans-serif; /* Sci-Fi Font */
-    background: radial-gradient(circle, #050505 30%, #000000 100%);
-    color: #00ffc8;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,28 +12,36 @@ body {
 
 /* Form Container */
 .login-container {
-    background: rgba(20, 20, 20, 0.9);
+    background: rgba(255, 255, 255, 0.9);
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 255, 200, 0.5);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     text-align: center;
-    width: 350px;
+    width: 100%;
+    max-width: 400px;
+    animation: fadeIn 1s ease-in-out;
 }
 
 /* Headings */
+h1, h2 {
+    color: #2575fc;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
 h2 {
-    font-size: 24px;
-    text-transform: uppercase;
-    color: #00ffc8;
-    text-shadow: 0 0 10px #00ffc8;
-    animation: neonGlow 1.5s infinite alternate;
+    font-size: 28px;
 }
 
 /* Labels */
 label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    text-align: left;
     display: block;
     margin-top: 10px;
-    font-size: 14px;
 }
 
 /* Input Fields */
@@ -41,10 +49,10 @@ input {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
-    border: none;
-    background: rgba(0, 255, 200, 0.1);
-    color: #00ffc8;
-    border-radius: 5px;
+    border: 1px solid #ddd;
+    background: white;
+    color: black;
+    border-radius: 8px;
     outline: none;
     font-size: 16px;
     transition: all 0.3s ease-in-out;
@@ -52,67 +60,79 @@ input {
 
 /* Input Focus Effect */
 input:focus {
-    box-shadow: 0 0 10px #00ffc8;
-    background: rgba(0, 255, 200, 0.2);
+    border-color: #2575fc;
+    box-shadow: 0 0 8px rgba(37, 117, 252, 0.3);
 }
 
 /* Button Container */
 .button-group {
     display: flex;
     justify-content: space-between;
+    gap: 10px;
     margin-top: 20px;
 }
 
 /* Buttons */
-button {
-    width: 48%;
-    padding: 10px;
+button, .btn {
+    padding: 12px 24px;
+    background: #2575fc;
+    color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
-    text-transform: uppercase;
     transition: all 0.3s ease-in-out;
-}
-
-/* Sign-In Button */
-.btn-signin {
-    background: linear-gradient(90deg, #0066ff, #00bfff);
-    color: white;
-    box-shadow: 0 0 10px #00bfff;
-}
-
-.btn-signin:hover {
-    background: linear-gradient(90deg, #0052cc, #0088ff);
-    box-shadow: 0 0 15px #00bfff;
-}
-
-/* Sign-Up Button */
-.btn-signup {
-    background: linear-gradient(90deg, #00ff66, #00cc44);
-    color: white;
-    text-decoration: none;
+    flex: 1;
     text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 10px #00ff66;
+    text-decoration: none;
+    display: inline-block;
 }
 
-.btn-signup:hover {
-    background: linear-gradient(90deg, #00cc44, #009933);
-    box-shadow: 0 0 15px #00ff66;
+button:hover, .btn:hover {
+    background: #1a5bbf;
+    transform: translateY(-2px);
 }
 
-/* Sci-Fi Glow Effect */
-@keyframes neonGlow {
-    0% {
-        text-shadow: 0 0 5px #00ffc8, 0 0 10px #00ffc8;
+p {
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+p[style="color: red;"] {
+    color: red !important;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
     }
-    50% {
-        text-shadow: 0 0 10px #00ffc8, 0 0 20px #00ffc8;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-    100% {
-        text-shadow: 0 0 5px #00ffc8, 0 0 10px #00ffc8;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
     }
 }

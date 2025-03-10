@@ -6,6 +6,7 @@
     <title>Course Stats</title>
 
     <!-- Bootstrap for styling -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Chart.js for graphical representation -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -14,19 +15,10 @@
 
     <style>
         /* General Styling */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+
 
         .container {
-            max-width: 800px;
+            max-width: 560px;
             margin: 20px;
             padding: 20px;
             background: white;
@@ -98,7 +90,7 @@
 
 <div class="container">
     <h2>Student Course Stats</h2>
-<center><div class="stats-container">
+    <center><div class="stats-container">
         <p><strong>Completed Courses:</strong> <span id="completed" th:text="${completedCourses}"></span></p>
         <p><strong>Active Courses:</strong> <span id="active" th:text="${activeCourses}"></span></p>
         <p><strong>Total Study Time:</strong> <span id="studyTime" th:text="${totalTimeSpent}"></span> minutes</p>

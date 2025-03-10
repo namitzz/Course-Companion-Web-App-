@@ -2,14 +2,11 @@ package com.example.project.controller;
 
 import com.example.project.model.User;
 import com.example.project.repository.UserRepository;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -40,12 +37,11 @@ public class AuthController {
     @PostMapping("/register")
     public String registerUser(@RequestParam String username, @RequestParam String password) {
         if (userRepository.findByUsername(username).isPresent()) {
-            return "redirect:/auth/register?error=username_exists";  // Redirect with error message
+            return "redirect:/register?error=username_exists";  // Redirect with error message
         }
 
         User newUser = new User(username, passwordEncoder.encode(password), Set.of("ROLE_USER"));
         userRepository.save(newUser);
-        return "redirect:/auth/login?success=registration_successful";  //
+        return "redirect:/login?success=registration_successful";  // Redirect to login page after successful registration
     }
-
 }
