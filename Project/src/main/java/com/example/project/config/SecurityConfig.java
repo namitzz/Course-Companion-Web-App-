@@ -19,6 +19,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/courses/complete/**"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/complete-course"))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/dashboard", "/profile").authenticated()
                         .anyRequest().permitAll()
@@ -50,6 +52,7 @@ public class SecurityConfig {
                         .frameOptions(frameOptions -> frameOptions.disable())
                         // Add XSS protection header
                         .xssProtection(xss -> xss.headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK))
+
                 );
 
         return http.build();
