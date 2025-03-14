@@ -33,6 +33,9 @@ dependencies {
     // runtimeOnly 'mysql:mysql-connector-java'  // Use if you need MySQL
     // runtimeOnly 'org.postgresql:postgresql'  // Use if you need PostgreSQL
 
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
     // JSP Support (if you're using JSPs for views, otherwise remove)
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper' // Use implementation instead of runtimeOnly
     implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api' // Use Jakarta namespace for JSTL
