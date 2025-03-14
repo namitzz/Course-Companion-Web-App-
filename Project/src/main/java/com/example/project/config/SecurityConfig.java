@@ -19,40 +19,33 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/courses/complete/**"))
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/complete-course"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers(
+                        "/courses/complete/**",
+                        "/complete-course",
+                        "/h2-console/**",   // ✅ Added H2 console for development
+                        "/api/streaks/**"   // ✅ Allow API access without CSRF
+                ))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/dashboard", "/profile").authenticated()
+                        .requestMatchers("/dashboard", "/profile").authenticated()  // Secure pages
+                        .requestMatchers("/api/streaks/**").permitAll()  // ✅ Allow Streaks API
                         .anyRequest().permitAll()
                 )
                 .formLogin(login -> login
-                        // Custom login page URL
-                        .loginPage("/login")
+                        .loginPage("/login")   // Custom login page
                         .loginProcessingUrl("/login")
-                        // Default successful login redirect
                         .defaultSuccessUrl("/dashboard", true)
-                        // Custom failure URL
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        // Custom logout URL
                         .logoutUrl("/logout")
-                        // Redirect after logout
                         .logoutSuccessUrl("/login?logout=true")
                         .invalidateHttpSession(true)
                         .permitAll()
                 )
-                .csrf(csrf -> csrf
-                        // Disable CSRF for H2 console (if used)
-                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))
-                )
                 .headers(headers -> headers
-                        // Configure X-Frame-Options to allow embedding in iframes (for H2 console)
-                        .frameOptions(frameOptions -> frameOptions.disable())
-                        // Add XSS protection header
+                        .frameOptions(frameOptions -> frameOptions.disable()) // Allow H2 console
                         .xssProtection(xss -> xss.headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK))
-
                 );
 
         return http.build();
