@@ -7,19 +7,27 @@
 <body>
 <header>
   <h1>Goals Tracker</h1>
-  <a th:href="@{/logout}">Logout</a>
 </header>
 
 <section>
   <h2>Active Goals</h2>
-  <button onclick="window.location.href='/addGoal'">+ Add New Goal</button>
+  <button onclick="window.location.href='/goals/addGoal'">+ Add New Goal</button>
   <ul>
     <li th:each="goal : ${activeGoals}">
       <span th:text="${goal.title}"></span>
       (Expires at: <span th:text="${goal.expiresAt}"></span>)
       <button th:onclick="|window.location.href='/goals/edit/' + ${goal.id}|">Edit</button>
-      <button th:onclick="|completeGoal(${goal.id})|">Complete</button>
-      <button th:onclick="|deleteGoal(${goal.id})|">Delete</button>
+
+      <!-- Complete Goal Button using Form -->
+      <form th:action="@{/goals/{id}/complete(id=${goal.id})}" method="POST" style="display:inline;">
+        <button type="submit">Complete</button>
+      </form>
+
+      <!-- Delete Goal Button using POST with _method=DELETE -->
+      <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST" style="display:inline;">
+        <input type="hidden" name="_method" value="DELETE" />
+        <button type="submit">Delete</button>
+      </form>
     </li>
   </ul>
 </section>
@@ -43,11 +51,6 @@
 </section>
 
 <script>
-  function completeGoal(goalId) {
-    fetch(`/goals/${goalId}/complete`, { method: 'PATCH' })
-            .then(() => location.reload());
-  }
-
   function deleteGoal(goalId) {
     fetch(`/goals/${goalId}/delete`, { method: 'DELETE' })
             .then(() => location.reload());

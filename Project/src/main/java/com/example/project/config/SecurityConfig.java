@@ -23,7 +23,9 @@ public class SecurityConfig {
                         "/courses/complete/**",
                         "/complete-course",
                         "/h2-console/**",   // ✅ Added H2 console for development
-                        "/api/streaks/**"   // ✅ Allow API access without CSRF
+                        "/api/streaks/**",
+                        "/addGoal",
+                        "/editGoal"// ✅ Allow API access without CSRF
                 ))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/dashboard", "/profile", "/goals/**").authenticated()  // Secure pages

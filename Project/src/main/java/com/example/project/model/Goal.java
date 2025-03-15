@@ -1,6 +1,7 @@
 package com.example.project.model;
 
 import jakarta.persistence.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -44,7 +45,6 @@ public class Goal {
     }
 
     // Getters and Setters
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -65,5 +65,26 @@ public class Goal {
 
     public GoalStatus getStatus() { return status; }
     public void setStatus(GoalStatus status) { this.status = status; }
-}
 
+    // Calculate the number of days between createdAt and expiresAt (or current date if expiresAt is null)
+    public long getDays() {
+        LocalDateTime end = (expiresAt != null) ? expiresAt : LocalDateTime.now();
+        Duration duration = Duration.between(createdAt, end);
+        return duration.toDays();
+    }
+
+    // Calculate the number of hours between createdAt and expiresAt (or current date if expiresAt is null)
+    public long getHours() {
+        if (expiresAt != null) {
+            return java.time.Duration.between(createdAt, expiresAt).toHours();
+        }
+        return 0; // Or some other logic if expiresAt is null
+    }
+
+    // Calculate the number of minutes between createdAt and expiresAt (or current date if expiresAt is null)
+    public long getMinutes() {
+        LocalDateTime end = (expiresAt != null) ? expiresAt : LocalDateTime.now();
+        Duration duration = Duration.between(createdAt, end);
+        return duration.toMinutes();
+    }
+}

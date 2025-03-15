@@ -10,6 +10,7 @@
   <a th:href="@{/goals}">Back to Goals</a>
 </header>
 
+<!-- Update form action to use the goal's ID in the URL -->
 <form th:action="@{/goals/{id}/edit(id=${goal.id})}" method="post">
   <label>Goal Title:</label>
   <input type="text" name="title" th:value="${goal.title}" required>
