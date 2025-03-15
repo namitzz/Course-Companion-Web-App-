@@ -26,9 +26,10 @@ public class SecurityConfig {
                         "/api/streaks/**"   // ✅ Allow API access without CSRF
                 ))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/dashboard", "/profile").authenticated()  // Secure pages
+                        .requestMatchers("/dashboard", "/profile", "/goals/**").authenticated()  // Secure pages
                         .requestMatchers("/api/streaks/**").permitAll()  // ✅ Allow Streaks API
                         .anyRequest().permitAll()
+
                 )
                 .formLogin(login -> login
                         .loginPage("/login")   // Custom login page

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add Goal</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header>
+  <h1>Add a New Goal</h1>
+  <a th:href="@{/goals}">Back to Goals</a>
+</header>
+
+<form th:action="@{/goals/add}" method="post">
+  <label>Goal Title:</label>
+  <input type="text" name="title" required>
+
+  <label>Days:</label>
+  <input type="number" name="days" min="0" required>
+
+  <label>Hours:</label>
+  <input type="number" name="hours" min="0" required>
+
+  <label>Minutes:</label>
+  <input type="number" name="minutes" min="0" required>
+
+  <button type="submit">Create Goal</button>
+</form>
+</body>
+</html>

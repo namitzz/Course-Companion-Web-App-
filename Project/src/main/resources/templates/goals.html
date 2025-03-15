@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Goals Tracker</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header>
+  <h1>Goals Tracker</h1>
+  <a th:href="@{/logout}">Logout</a>
+</header>
+
+<section>
+  <h2>Active Goals</h2>
+  <button onclick="window.location.href='/addGoal'">+ Add New Goal</button>
+  <ul>
+    <li th:each="goal : ${activeGoals}">
+      <span th:text="${goal.title}"></span>
+      (Expires at: <span th:text="${goal.expiresAt}"></span>)
+      <button th:onclick="|window.location.href='/goals/edit/' + ${goal.id}|">Edit</button>
+      <button th:onclick="|completeGoal(${goal.id})|">Complete</button>
+      <button th:onclick="|deleteGoal(${goal.id})|">Delete</button>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Expired Goals</h2>
+  <ul>
+    <li th:each="goal : ${expiredGoals}">
+      <span th:text="${goal.title}"></span> (Expired on: <span th:text="${goal.expiresAt}"></span>)
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Completed Goals</h2>
+  <ul>
+    <li th:each="goal : ${completedGoals}">
+      <span th:text="${goal.title}"></span> (Completed on: <span th:text="${goal.completedAt}"></span>)
+    </li>
+  </ul>
+</section>
+
+<script>
+  function completeGoal(goalId) {
+    fetch(`/goals/${goalId}/complete`, { method: 'PATCH' })
+            .then(() => location.reload());
+  }
+
+  function deleteGoal(goalId) {
+    fetch(`/goals/${goalId}/delete`, { method: 'DELETE' })
+            .then(() => location.reload());
+  }
+</script>
+</body>
+</html>
