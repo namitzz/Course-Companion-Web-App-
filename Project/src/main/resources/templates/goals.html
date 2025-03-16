@@ -5,62 +5,65 @@
   <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<header>
+
+<div class="container">
   <h1>Goals Tracker</h1>
-</header>
 
-<section>
-  <h2>Active Goals</h2>
-  <button onclick="window.location.href='/goals/addGoal'">+ Add New Goal</button>
-  <ul>
-    <li th:each="goal : ${activeGoals}">
-      <span th:text="${goal.title}"></span>
-      (Expires at: <span th:text="${goal.expiresAt}"></span>)
-      <button th:onclick="|window.location.href='/goals/edit/' + ${goal.id}|">Edit</button>
+  <!-- Active Goals Section -->
+  <section>
+    <h2>Active Goals</h2>
+    <button onclick="window.location.href='/goals/addGoal'">+ Add New Goal</button>
+    <ul>
+      <li th:each="goal : ${activeGoals}">
+        <span th:text="${goal.title}"></span>
+        <span th:inline="text">(Expires [[${#temporals.format(goal.expiresAt, 'MMM dd, yyyy HH:mm')}]])</span>
 
-      <!-- Complete Goal Button using Form -->
-      <form th:action="@{/goals/{id}/complete(id=${goal.id})}" method="POST" style="display:inline;">
-        <button type="submit">Complete</button>
-      </form>
 
-      <!-- Delete Goal Button -->
-      <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST" style="display:inline;">
-        <input type="hidden" name="_method" value="DELETE" />
-        <button type="submit">Delete</button>
-      </form>
-    </li>
-  </ul>
-</section>
+        <button th:onclick="|window.location.href='/goals/edit/' + ${goal.id}|">Edit</button>
 
-<section>
-  <h2>Expired Goals</h2>
-  <ul>
-    <li th:each="goal : ${expiredGoals}">
-      <span th:text="${goal.title}"></span> (Expired on: <span th:text="${goal.expiresAt}"></span>)
+        <form th:action="@{/goals/{id}/complete(id=${goal.id})}" method="POST">
+          <button type="submit">Complete</button>
+        </form>
 
-      <!-- Delete Expired Goal Button -->
-      <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST" style="display:inline;">
-        <input type="hidden" name="_method" value="DELETE" />
-        <button type="submit">Delete</button>
-      </form>
-    </li>
-  </ul>
-</section>
+        <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
+          <input type="hidden" name="_method" value="DELETE" />
+          <button type="submit" class="delete-btn">Delete</button>
+        </form>
+      </li>
+    </ul>
+  </section>
 
-<section>
-  <h2>Completed Goals</h2>
-  <ul>
-    <li th:each="goal : ${completedGoals}">
-      <span th:text="${goal.title}"></span> (Completed on: <span th:text="${goal.completedAt}"></span>)
+  <!-- Expired Goals Section -->
+  <section>
+    <h2>Expired Goals</h2>
+    <ul>
+      <li th:each="goal : ${expiredGoals}">
+        <span th:text="${goal.title}"></span>
+        <span th:inline="text">(Expired [[${#temporals.format(goal.expiresAt, 'MMM dd, yyyy HH:mm')}]])</span>
 
-      <!-- Delete Completed Goal Button -->
-      <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST" style="display:inline;">
-        <input type="hidden" name="_method" value="DELETE" />
-        <button type="submit">Delete</button>
-      </form>
-    </li>
-  </ul>
-</section>
+        <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
+          <input type="hidden" name="_method" value="DELETE" />
+          <button type="submit" class="delete-btn">Delete</button>
+        </form>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Completed Goals Section -->
+  <section>
+    <h2>Completed Goals</h2>
+    <ul>
+      <li th:each="goal : ${completedGoals}">
+        <span th:text="${goal.title}"></span>(Completed [[${#temporals.format(goal.completedAt, 'MMM dd, yyyy HH:mm')}]])
+
+        <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
+          <input type="hidden" name="_method" value="DELETE" />
+          <button type="submit" class="delete-btn">Delete</button>
+        </form>
+      </li>
+    </ul>
+  </section>
+</div>
 
 <script>
   function deleteGoal(goalId) {
@@ -68,5 +71,6 @@
             .then(() => location.reload());
   }
 </script>
+
 </body>
 </html>
