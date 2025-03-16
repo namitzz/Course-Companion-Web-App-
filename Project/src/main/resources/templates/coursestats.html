@@ -15,8 +15,6 @@
 
     <style>
         /* General Styling */
-
-
         .container {
             max-width: 560px;
             margin: 20px;
@@ -66,39 +64,38 @@
 
         /* Animations */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes slideDown {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
+<h1>Course Stats</h1>
+<p>Completed Courses: <span th:text="${completedCourses}"></span></p>
+<p>Total Time Spent: <span th:text="${totalTimeSpent}"></span></p>
+
+<h2>Top 3 Most Popular Courses</h2>
+<ul>
+    <li th:each="course : ${top3Courses}" th:text="${course}"></li>
+</ul>
 
 <div class="container">
     <h2>Student Course Stats</h2>
-    <center><div class="stats-container">
-        <p><strong>Completed Courses:</strong> <span id="completed" th:text="${completedCourses}"></span></p>
-        <p><strong>Active Courses:</strong> <span id="active" th:text="${activeCourses}"></span></p>
-        <p><strong>Total Study Time:</strong> <span id="studyTime" th:text="${totalTimeSpent}"></span> minutes</p>
+    <center>
+        <div class="stats-container">
+            <p><strong>Completed Courses:</strong> <span id="completed" th:text="${completedCourses}"></span></p>
+            <p><strong>Active Courses:</strong> <span id="active" th:text="${activeCourses}"></span></p>
+            <p><strong>Total Study Time:</strong> <span id="studyTime" th:text="${totalTimeSpent}"></span> minutes</p>
 
-        <!-- Pie Chart -->
-        <canvas id="courseChart"></canvas>
-    </div></center>
-
+            <!-- Pie Chart -->
+            <canvas id="courseChart"></canvas>
+        </div>
+    </center>
 </div>
 
 <script>
@@ -128,9 +125,7 @@
                     callbacks: {
                         label: function(context) {
                             let label = context.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
+                            if (label) { label += ': '; }
                             label += context.raw + ' courses';
                             return label;
                         }

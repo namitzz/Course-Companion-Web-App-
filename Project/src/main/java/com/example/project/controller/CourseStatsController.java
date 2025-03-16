@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/stats")
 public class CourseStatsController {
@@ -19,5 +21,10 @@ public class CourseStatsController {
     @GetMapping
     public ResponseEntity<CourseStats> getCourseStats() {
         return ResponseEntity.ok(courseStatsService.getStats());
+    }
+
+    @GetMapping("/top3courses")
+    public ResponseEntity<List<String>> getTop3Courses() {
+        return ResponseEntity.ok(courseStatsService.getTop3PopularCourses());
     }
 }
