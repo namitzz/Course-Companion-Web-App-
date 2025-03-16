@@ -61,10 +61,11 @@ public class GoalService {
         return goalRepository.findById(id);
     }
 
-    public void checkExpiredGoals() {
-        List<Goal> activeGoals = goalRepository.findByUserAndStatus(null, GoalStatus.ACTIVE);
+    public void checkExpiredGoals(User user) {
+        List<Goal> activeGoals = goalRepository.findByUserAndStatus(user, GoalStatus.ACTIVE);
         for (Goal goal : activeGoals) {
             if (goal.getExpiresAt().isBefore(LocalDateTime.now())) {
+                System.out.println("Goal expired: " + goal.getTitle() + " (Expires at: " + goal.getExpiresAt() + ")");
                 goal.setStatus(GoalStatus.EXPIRED);
                 goalRepository.save(goal);
             }
