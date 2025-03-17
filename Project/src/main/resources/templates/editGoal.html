@@ -11,12 +11,12 @@
   <h1>Edit Goal</h1>
 
   <!-- Back Button -->
-  <button onclick="window.location.href='/goals'" class="btn">Back to Goals</button>
+  <button onclick="window.location.href='/goals'" class="btn top-button">Back to Goals</button>
 
-  <!-- Update form action to use the goal's ID in the URL -->
-  <form th:action="@{/goals/{id}/edit(id=${goal.id})}" method="post">
+  <!-- Form -->
+  <form th:action="@{/goals/{id}/edit(id=${goal.id})}" method="post" onsubmit="return validateForm()">
     <label>Goal Title:</label>
-    <input type="text" name="title" th:value="${goal.title}" required>
+    <input type="text" name="title" id="goalTitle" th:value="${goal.title}" required pattern=".*\S.*" title="Title cannot be empty or whitespace">
 
     <label>Days:</label>
     <input type="number" name="days" th:value="${goal.days}" min="0" required>
@@ -27,8 +27,20 @@
     <label>Minutes:</label>
     <input type="number" name="minutes" th:value="${goal.minutes}" min="0" required>
 
-    <button type="submit">Update Goal</button>
+    <!-- Update Button -->
+    <button type="submit" class="btn bottom-button">Update Goal</button>
   </form>
+
+  <script>
+    function validateForm() {
+      let titleInput = document.getElementById("goalTitle").value.trim();
+      if (titleInput.length === 0) {
+        alert("Goal title cannot be empty or whitespace.");
+        return false;
+      }
+      return true;
+    }
+  </script>
 </div>
 
 </body>

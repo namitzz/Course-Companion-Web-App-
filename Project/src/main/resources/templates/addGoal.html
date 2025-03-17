@@ -11,11 +11,11 @@
   <h1>Add a New Goal</h1>
 
   <!-- Back Button -->
-  <button onclick="window.location.href='/goals'" class="btn">Back to Goals</button>
+  <button onclick="window.location.href='/goals'" class="btn top-button">Back to Goals</button>
 
-  <form th:action="@{/goals/add}" method="post">
+  <form th:action="@{/goals/add}" method="post" onsubmit="return validateForm()">
     <label>Goal Title:</label>
-    <input type="text" name="title" required>
+    <input type="text" name="title" id="goalTitle" required pattern=".*\S.*" title="Title cannot be empty or whitespace">
 
     <label>Days:</label>
     <input type="number" name="days" min="0" required>
@@ -26,8 +26,19 @@
     <label>Minutes:</label>
     <input type="number" name="minutes" min="0" required>
 
-    <button type="submit">Create Goal</button>
+    <button type="submit" class="btn bottom-button">Create Goal</button>
   </form>
+
+  <script>
+    function validateForm() {
+      let titleInput = document.getElementById("goalTitle").value.trim();
+      if (titleInput.length === 0) {
+        alert("Goal title cannot be empty or whitespace.");
+        return false;
+      }
+      return true;
+    }
+  </script>
 </div>
 
 </body>
