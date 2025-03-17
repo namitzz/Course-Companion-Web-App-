@@ -6,39 +6,111 @@
 
   <!-- Link to the CSS file -->
   <link rel="stylesheet" th:href="@{/css/styles.css}">
+  <style>
+    /* General Styling */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: white;
+      padding: 20px;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    .sidebar h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+    }
+
+    .sidebar .nav-link {
+      color: white;
+      padding: 10px 15px;
+      margin: 5px 0;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600; /* Same font weight as the dashboard title */
+    }
+
+    .sidebar .nav-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(10px);
+    }
+
+    /* Content Area */
+    .container {
+      margin-left: 250px; /* Space for sidebar */
+      padding: 20px;
+    }
+
+    /* Button styling */
+    button {
+      padding: 10px 20px;
+      background-color: #2575fc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #6a11cb;
+    }
+
+    /* Delete Button Styling */
+    .delete-btn {
+      background-color: red;
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background-color: darkred;
+    }
+  </style>
 </head>
 <body>
 
+<!-- Sidebar -->
+<div class="sidebar">
+  <h2>Goals Tracker</h2>
+  <ul class="nav flex-column">
+    <li class="nav-item"><a href="/dashboard" class="nav-link">Dashboard</a></li>
+    <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
+  </ul>
+</div>
+
+<!-- Main Content -->
 <div class="container">
   <h1>Goals Tracker</h1>
 
   <!-- Active Goals Section -->
   <section>
     <h2>Active Goals</h2>
-
-    <!-- Button to navigate to the page for adding a new goal -->
     <button onclick="window.location.href='/goals/addGoal'">+ Add New Goal</button>
-
-    <!-- List of active goals -->
     <ul>
       <li th:each="goal : ${activeGoals}">
-        <!-- Display the goal title -->
         <span th:text="${goal.title}"></span>
-
-        <!-- Display the expiration date of the goal, formatted -->
         <span th:inline="text">(Expires [[${#temporals.format(goal.expiresAt, 'MMM dd, yyyy HH:mm')}]])</span>
-
-        <!-- Button to edit a goal -->
         <button th:onclick="|window.location.href='/goals/edit/' + ${goal.id}|">Edit</button>
-
-        <!-- Form to mark the goal as completed -->
         <form th:action="@{/goals/{id}/complete(id=${goal.id})}" method="POST">
           <button type="submit">Complete</button>
         </form>
-
-        <!-- Form to delete a goal -->
         <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
-          <!-- Hidden field to specify the HTTP method (DELETE) -->
           <input type="hidden" name="_method" value="DELETE" />
           <button type="submit" class="delete-btn">Delete</button>
         </form>
@@ -49,18 +121,11 @@
   <!-- Expired Goals Section -->
   <section>
     <h2>Expired Goals</h2>
-    <!-- List of expired goals -->
     <ul>
       <li th:each="goal : ${expiredGoals}">
-        <!-- Display the goal title -->
         <span th:text="${goal.title}"></span>
-
-        <!-- Display the expiration date of the goal -->
         <span th:inline="text">(Expired [[${#temporals.format(goal.expiresAt, 'MMM dd, yyyy HH:mm')}]])</span>
-
-        <!-- Form to delete an expired goal -->
         <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
-          <!-- Hidden field to specify the HTTP method (DELETE) -->
           <input type="hidden" name="_method" value="DELETE" />
           <button type="submit" class="delete-btn">Delete</button>
         </form>
@@ -71,15 +136,11 @@
   <!-- Completed Goals Section -->
   <section>
     <h2>Completed Goals</h2>
-    <!-- List of completed goals -->
     <ul>
       <li th:each="goal : ${completedGoals}">
-        <!-- Display the goal title and completion date -->
-        <span th:text="${goal.title}"></span>(Completed [[${#temporals.format(goal.completedAt, 'MMM dd, yyyy HH:mm')}]])
-
-        <!-- Form to delete a completed goal -->
+        <span th:text="${goal.title}"></span>
+        (Completed [[${#temporals.format(goal.completedAt, 'MMM dd, yyyy HH:mm')}]])
         <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
-          <!-- Hidden field to specify the HTTP method (DELETE) -->
           <input type="hidden" name="_method" value="DELETE" />
           <button type="submit" class="delete-btn">Delete</button>
         </form>
@@ -88,7 +149,6 @@
   </section>
 </div>
 
-<!-- JavaScript to handle goal deletion with fetch -->
 <script>
   function deleteGoal(goalId) {
     fetch(`/goals/${goalId}/delete`, { method: 'DELETE' })
