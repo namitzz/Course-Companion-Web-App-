@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <!-- Title of the page -->
   <title>Goals Tracker</title>
+
+  <!-- Link to the CSS file -->
   <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
@@ -12,20 +15,30 @@
   <!-- Active Goals Section -->
   <section>
     <h2>Active Goals</h2>
+
+    <!-- Button to navigate to the page for adding a new goal -->
     <button onclick="window.location.href='/goals/addGoal'">+ Add New Goal</button>
+
+    <!-- List of active goals -->
     <ul>
       <li th:each="goal : ${activeGoals}">
+        <!-- Display the goal title -->
         <span th:text="${goal.title}"></span>
+
+        <!-- Display the expiration date of the goal, formatted -->
         <span th:inline="text">(Expires [[${#temporals.format(goal.expiresAt, 'MMM dd, yyyy HH:mm')}]])</span>
 
-
+        <!-- Button to edit a goal -->
         <button th:onclick="|window.location.href='/goals/edit/' + ${goal.id}|">Edit</button>
 
+        <!-- Form to mark the goal as completed -->
         <form th:action="@{/goals/{id}/complete(id=${goal.id})}" method="POST">
           <button type="submit">Complete</button>
         </form>
 
+        <!-- Form to delete a goal -->
         <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
+          <!-- Hidden field to specify the HTTP method (DELETE) -->
           <input type="hidden" name="_method" value="DELETE" />
           <button type="submit" class="delete-btn">Delete</button>
         </form>
@@ -36,12 +49,18 @@
   <!-- Expired Goals Section -->
   <section>
     <h2>Expired Goals</h2>
+    <!-- List of expired goals -->
     <ul>
       <li th:each="goal : ${expiredGoals}">
+        <!-- Display the goal title -->
         <span th:text="${goal.title}"></span>
+
+        <!-- Display the expiration date of the goal -->
         <span th:inline="text">(Expired [[${#temporals.format(goal.expiresAt, 'MMM dd, yyyy HH:mm')}]])</span>
 
+        <!-- Form to delete an expired goal -->
         <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
+          <!-- Hidden field to specify the HTTP method (DELETE) -->
           <input type="hidden" name="_method" value="DELETE" />
           <button type="submit" class="delete-btn">Delete</button>
         </form>
@@ -52,11 +71,15 @@
   <!-- Completed Goals Section -->
   <section>
     <h2>Completed Goals</h2>
+    <!-- List of completed goals -->
     <ul>
       <li th:each="goal : ${completedGoals}">
+        <!-- Display the goal title and completion date -->
         <span th:text="${goal.title}"></span>(Completed [[${#temporals.format(goal.completedAt, 'MMM dd, yyyy HH:mm')}]])
 
+        <!-- Form to delete a completed goal -->
         <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
+          <!-- Hidden field to specify the HTTP method (DELETE) -->
           <input type="hidden" name="_method" value="DELETE" />
           <button type="submit" class="delete-btn">Delete</button>
         </form>
@@ -65,10 +88,11 @@
   </section>
 </div>
 
+<!-- JavaScript to handle goal deletion with fetch -->
 <script>
   function deleteGoal(goalId) {
     fetch(`/goals/${goalId}/delete`, { method: 'DELETE' })
-            .then(() => location.reload());
+            .then(() => location.reload());  <!-- Reload the page after deletion -->
   }
 </script>
 

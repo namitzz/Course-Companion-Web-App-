@@ -1,44 +1,60 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <!-- Title of the page -->
   <title>Edit Goal</title>
+
+  <!-- Link to the external CSS file for styling -->
   <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 
-<!-- White background container -->
+<!-- White background container for the "Edit Goal" page -->
 <div class="goal-container">
   <h1>Edit Goal</h1>
 
-  <!-- Back Button -->
+  <!-- Button to navigate back to the goals page -->
   <button onclick="window.location.href='/goals'" class="btn top-button">Back to Goals</button>
 
-  <!-- Form -->
+  <!-- Form for editing an existing goal -->
   <form th:action="@{/goals/{id}/edit(id=${goal.id})}" method="post" onsubmit="return validateForm()">
+    <!-- Label and input for goal title -->
     <label>Goal Title:</label>
     <input type="text" name="title" id="goalTitle" th:value="${goal.title}" required pattern=".*\S.*" title="Title cannot be empty or whitespace">
+    <!-- The title input is pre-filled with the current goal title using Thymeleaf (th:value="${goal.title}") -->
 
+    <!-- Label and input for goal duration in days -->
     <label>Days:</label>
     <input type="number" name="days" th:value="${days}" min="0" required>
+    <!-- Pre-filled with the existing "days" value using Thymeleaf (th:value="${days}") -->
 
+    <!-- Label and input for goal duration in hours -->
     <label>Hours:</label>
     <input type="number" name="hours" th:value="${hours}" min="0" required>
+    <!-- Pre-filled with the existing "hours" value using Thymeleaf (th:value="${hours}") -->
 
+    <!-- Label and input for goal duration in minutes -->
     <label>Minutes:</label>
     <input type="number" name="minutes" th:value="${minutes}" min="0" required>
+    <!-- Pre-filled with the existing "minutes" value using Thymeleaf (th:value="${minutes}") -->
 
-    <!-- Update Button -->
+    <!-- Submit button to update the goal -->
     <button type="submit" class="btn bottom-button">Update Goal</button>
   </form>
 
+  <!-- JavaScript function to validate the form -->
   <script>
+    // Function that runs when the form is submitted
     function validateForm() {
+      // Get the value of the goal title input field and trim any leading/trailing spaces
       let titleInput = document.getElementById("goalTitle").value.trim();
+
+      // If the title is empty or contains only spaces, display an alert and prevent form submission
       if (titleInput.length === 0) {
         alert("Goal title cannot be empty or whitespace.");
-        return false;
+        return false;  // Prevent form submission
       }
-      return true;
+      return true;  // Allow form submission if the title is valid
     }
   </script>
 </div>
