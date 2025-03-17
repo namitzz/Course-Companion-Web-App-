@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -30,34 +29,50 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CompletedCourse> completedCourses = new HashSet<>();
 
+    // Default constructor
     public User() {}
 
+    // Constructor with username and password
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.roles = new HashSet<>(); // Default empty roles set
+    }
+
+    // Constructor with username, password, and roles
     public User(String username, String password, Set<String> roles) {
         this.username = username;
         this.password = password;
         this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();
     }
 
+    // Getters and Setters
     public Long getId() { return id; }
+
     public void setId(Long id) { this.id = id; }
 
     public String getUsername() { return username; }
+
     public void setUsername(String username) { this.username = username; }
 
     public String getPassword() { return password; }
+
     public void setPassword(String password) { this.password = password; }
 
     public Set<String> getRoles() { return roles; }
+
     public void setRoles(Set<String> roles) {
         this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();
     }
 
     public Set<Badge> getBadges() { return badges; }
+
     public void setBadges(Set<Badge> badges) {
         this.badges = badges;
     }
 
     public Set<CompletedCourse> getCompletedCourses() { return completedCourses; }
+
     public void setCompletedCourses(Set<CompletedCourse> completedCourses) {
         this.completedCourses = completedCourses;
     }
