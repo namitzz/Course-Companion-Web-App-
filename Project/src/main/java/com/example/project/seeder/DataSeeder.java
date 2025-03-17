@@ -14,11 +14,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataSeeder implements CommandLineRunner {
 
+    // Inject repositories
     private final CourseStatsRepository courseStatsRepository;
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
     private final CompletedCourseRepository completedCourseRepository;
 
+    // Constructor
     public DataSeeder(CourseStatsRepository courseStatsRepository,
                       CourseRepository courseRepository,
                       UserRepository userRepository,
@@ -29,6 +31,7 @@ public class DataSeeder implements CommandLineRunner {
         this.completedCourseRepository = completedCourseRepository;
     }
 
+    // Seed data
     @Override
     public void run(String... args) {
         // Clear existing data (optional)
@@ -52,6 +55,7 @@ public class DataSeeder implements CommandLineRunner {
         Course course3 = new Course("Database Design", "Understand relational database design.");
         Course course4 = new Course("REST APIs", "Build and consume RESTful APIs.");
 
+        // Save parent record first
         course1 = courseRepository.save(course1); // Save parent record first
         course2 = courseRepository.save(course2);
         course3 = courseRepository.save(course3);
@@ -64,12 +68,14 @@ public class DataSeeder implements CommandLineRunner {
         CompletedCourse completedCourse4 = new CompletedCourse(user2, course3);
         CompletedCourse completedCourse5 = new CompletedCourse(user2, course2);
 
+        // Save child records
         completedCourseRepository.save(completedCourse1);
         completedCourseRepository.save(completedCourse2);
         completedCourseRepository.save(completedCourse3);
         completedCourseRepository.save(completedCourse4);
         completedCourseRepository.save(completedCourse5);
 
+        // Print message
         System.out.println("Dummy data added to the database!");
     }
 }

@@ -13,16 +13,16 @@ import java.util.List;
 @RequestMapping("/api/stats")
 public class CourseStatsController {
     private final CourseStatsService courseStatsService;
-
+    // Constructor
     public CourseStatsController(CourseStatsService courseStatsService) {
         this.courseStatsService = courseStatsService;
     }
-
+    // Get course stats
     @GetMapping
     public ResponseEntity<CourseStats> getCourseStats() {
         return ResponseEntity.ok(courseStatsService.getStats());
     }
-
+    // Get top 3 courses
     @GetMapping("/top3courses")
     public ResponseEntity<List<String>> getTop3Courses() {
         return ResponseEntity.ok(courseStatsService.getTop3PopularCourses());

@@ -11,13 +11,13 @@ import java.util.List;
 
 @Repository
 public interface CompletedCourseRepository extends JpaRepository<CompletedCourse, Long> {
-
+    // Finds all completed courses by user
     List<CompletedCourse> findByUser(User user);
 
-
+    // Checks if a user has completed a course
     boolean existsByUserAndCourseId(User user, Long courseId);
 
-
+    // Finds the top 3 most popular courses
     @Query("SELECT c.course.title FROM CompletedCourse c " +
             "GROUP BY c.course.title " +
             "ORDER BY COUNT(c.course.id) DESC")
