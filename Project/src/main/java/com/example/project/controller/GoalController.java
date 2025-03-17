@@ -48,10 +48,15 @@ public class GoalController {
         return "redirect:/goals";
     }
 
-    // Show form to edit an existing goal
     @GetMapping("/edit/{id}")
     public String showEditGoalForm(@PathVariable Long id, Model model) {
-        goalService.getGoalById(id).ifPresent(goal -> model.addAttribute("goal", goal));
+        goalService.getGoalById(id).ifPresent(goal -> {
+            int[] timeComponents = goalService.calculateTimeComponents(goal);
+            model.addAttribute("goal", goal);
+            model.addAttribute("days", timeComponents[0]);
+            model.addAttribute("hours", timeComponents[1]);
+            model.addAttribute("minutes", timeComponents[2]);
+        });
         return "editGoal";
     }
 

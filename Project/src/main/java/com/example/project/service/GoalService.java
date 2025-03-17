@@ -46,6 +46,19 @@ public class GoalService {
         return goalOpt;
     }
 
+    public int[] calculateTimeComponents(Goal goal) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expiresAt = goal.getExpiresAt();
+
+        long totalMinutes = java.time.Duration.between(now, expiresAt).toMinutes();
+
+        int days = (int) (totalMinutes / (24 * 60));
+        int hours = (int) ((totalMinutes % (24 * 60)) / 60);
+        int minutes = (int) (totalMinutes % 60);
+
+        return new int[]{days, hours, minutes};
+    }
+
     public void deleteGoal(Long goalId) {
         goalRepository.deleteById(goalId);
     }

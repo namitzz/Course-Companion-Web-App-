@@ -3,20 +3,47 @@
 <head>
   <title>Add Goal</title>
   <link rel="stylesheet" th:href="@{/css/styles.css}">
+  <script>
+    function setGoalTitle() {
+      let dropdown = document.getElementById("defaultGoals");
+      let customInput = document.getElementById("goalTitle");
+
+      if (dropdown.value !== "custom") {
+        customInput.value = dropdown.value;
+        customInput.readOnly = true; // Prevent manual changes when using a default goal
+      } else {
+        customInput.value = "";
+        customInput.readOnly = false;
+      }
+    }
+  </script>
 </head>
 <body>
 
-<!-- White background container -->
 <div class="goal-container">
   <h1>Add a New Goal</h1>
 
   <!-- Back Button -->
   <button onclick="window.location.href='/goals'" class="btn top-button">Back to Goals</button>
 
-  <form th:action="@{/goals/add}" method="post" onsubmit="return validateForm()">
+  <form th:action="@{/goals/add}" method="post">
+
+    <!-- Dropdown for Default Goals -->
+    <label>Select a Goal:</label>
+    <select id="defaultGoals" onchange="setGoalTitle()">
+      <option value="custom">-- Choose a Goal or Enter Your Own --</option>
+      <option value="Complete 1 IBM SkillsBuild Course">Complete 1 IBM SkillsBuild Course</option>
+      <option value="Complete 3 IBM SkillsBuild Courses">Complete 3 IBM SkillsBuild Courses</option>
+      <option value="Complete 5 IBM SkillsBuild Courses">Complete 5 IBM SkillsBuild Courses</option>
+      <option value="Earn an IBM SkillsBuild Certificate">Earn an IBM SkillsBuild Certificate</option>
+      <option value="Complete a Career Path in IBM SkillsBuild">Complete a Career Path in IBM SkillsBuild</option>
+    </select>
+
+    <!-- Custom Goal Title Input -->
     <label>Goal Title:</label>
     <input type="text" name="title" id="goalTitle" required pattern=".*\S.*" title="Title cannot be empty or whitespace">
 
+    <!-- Duration Inputs -->
     <label>Days:</label>
     <input type="number" name="days" min="0" required>
 
@@ -26,19 +53,9 @@
     <label>Minutes:</label>
     <input type="number" name="minutes" min="0" required>
 
+    <!-- Submit Button -->
     <button type="submit" class="btn bottom-button">Create Goal</button>
   </form>
-
-  <script>
-    function validateForm() {
-      let titleInput = document.getElementById("goalTitle").value.trim();
-      if (titleInput.length === 0) {
-        alert("Goal title cannot be empty or whitespace.");
-        return false;
-      }
-      return true;
-    }
-  </script>
 </div>
 
 </body>

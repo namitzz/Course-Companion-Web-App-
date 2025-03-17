@@ -19,13 +19,13 @@
     <input type="text" name="title" id="goalTitle" th:value="${goal.title}" required pattern=".*\S.*" title="Title cannot be empty or whitespace">
 
     <label>Days:</label>
-    <input type="number" name="days" th:value="${goal.days}" min="0" required>
+    <input type="number" name="days" th:value="${days}" min="0" required>
 
     <label>Hours:</label>
-    <input type="number" name="hours" th:value="${goal.hours}" min="0" required>
+    <input type="number" name="hours" th:value="${hours}" min="0" required>
 
     <label>Minutes:</label>
-    <input type="number" name="minutes" th:value="${goal.minutes}" min="0" required>
+    <input type="number" name="minutes" th:value="${minutes}" min="0" required>
 
     <!-- Update Button -->
     <button type="submit" class="btn bottom-button">Update Goal</button>

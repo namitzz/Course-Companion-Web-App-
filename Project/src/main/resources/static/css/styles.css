@@ -167,3 +167,30 @@ button:hover, .btn:hover {
 .bottom-button {
     margin-top: 20px; /* Adds spacing above Create/Update Goal */
 }
+
+/* Dropdown Styling */
+select {
+    width: 106.25%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px; /* Adds spacing below the dropdown */
+    border: 1px solid #ddd;
+    background: white;
+    color: black;
+    border-radius: 8px;
+    outline: none;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+select:focus {
+    border-color: #2575fc;
+    box-shadow: 0 0 8px rgba(37, 117, 252, 0.3);
+}
+
+/* Adjusts spacing for dropdown and inputs */
+.form-group {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 15px; /* Adds spacing between elements */
+}
