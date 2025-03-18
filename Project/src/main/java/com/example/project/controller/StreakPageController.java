@@ -2,36 +2,35 @@ package com.example.project.controller;
 
 import com.example.project.model.User;
 import com.example.project.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/dashboard")
-public class DashboardController {
+public class StreakPageController {
 
     private final UserService userService;
 
-    public DashboardController(UserService userService) {
+    @Autowired
+    public StreakPageController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping
-    public String dashboardPage(Model model, Authentication authentication) {
+    @GetMapping("/streak")
+    public String showStreakPage(Model model, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
-            return "redirect:/login"; // Redirect if not authenticated
+            return "redirect:/login"; // ✅ Redirect if not logged in
         }
 
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails userDetails) {
-            // ✅ Get real user from database using username
-            User user = userService.getUserByUsername(userDetails.getUsername());
-            model.addAttribute("userId", user.getId());
+            User user = userService.getUserByUsername(userDetails.getUsername());  // ✅ Fetch user properly
+            model.addAttribute("userId", user.getId());  // ✅ Send `userId` to Thymeleaf
         }
 
-        return "dashboard";
+        return "streak";  // ✅ Renders `streak.html`
     }
 }
