@@ -16,25 +16,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DashboardController {
 
     private final UserService userService;
-
-    public DashboardController(UserService userService) {
-        this.userService = userService;
-    }
-
-    // Constructor
     private final CourseStatsService courseStatsService;
-    // Constructor
-    public DashboardController(CourseStatsService courseStatsService) {
+
+    public DashboardController(UserService userService, CourseStatsService courseStatsService) {
+        this.userService = userService;
         this.courseStatsService = courseStatsService;
     }
+
     // Get dashboard page
     @GetMapping
     public String dashboardPage(Model model, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/login"; // Redirect if not authenticated
-    public String dashboardPage(Authentication authentication, Model model) {
-        if (authentication == null) {
-            return "redirect:/login"; // Redirect if user is not logged in
         }
 
         Object principal = authentication.getPrincipal();
@@ -43,8 +36,6 @@ public class DashboardController {
             User user = userService.getUserByUsername(userDetails.getUsername());
             model.addAttribute("userId", user.getId());
         }
-
-        return "dashboard";
 
         // Add attributes to the model
         model.addAttribute("top3Courses", courseStatsService.getTop3PopularCourses());
