@@ -1,6 +1,7 @@
 1. Arshdip 
 2. Namit
-3. Neel
+3. Neel:
+Currently as the scrum master, my job is to make sure that everyone has started with their sprint 2 user stories. I made sure to put out a message on the group chat to remind everyone to start coding their user stories to make sure that the initial process of their sprint 2 user stories go smoothly for everyone.
 4. Raiyan:
 Currently a week before the project is due and as scrum master I am constantly contacting each member to ensure that everyone is on track to complete their sprint 2 story/ensuring that sprint 1 stories are completed before our internal deadline before merging takes place.
 5. Denis
