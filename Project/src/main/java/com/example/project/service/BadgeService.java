@@ -22,6 +22,7 @@ public class BadgeService {
     @Autowired
     private BadgeRepository badgeRepository;
 
+    // Award a badge to a user for completing a course
     public void completeCourse(Long userId, Long courseId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));

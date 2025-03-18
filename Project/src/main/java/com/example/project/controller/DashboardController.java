@@ -1,5 +1,7 @@
 package com.example.project.controller;
 
+import com.example.project.service.CourseStatsService;
+
 import com.example.project.model.User;
 import com.example.project.service.UserService;
 import org.springframework.security.core.Authentication;
@@ -19,10 +21,20 @@ public class DashboardController {
         this.userService = userService;
     }
 
+    // Constructor
+    private final CourseStatsService courseStatsService;
+    // Constructor
+    public DashboardController(CourseStatsService courseStatsService) {
+        this.courseStatsService = courseStatsService;
+    }
+    // Get dashboard page
     @GetMapping
     public String dashboardPage(Model model, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/login"; // Redirect if not authenticated
+    public String dashboardPage(Authentication authentication, Model model) {
+        if (authentication == null) {
+            return "redirect:/login"; // Redirect if user is not logged in
         }
 
         Object principal = authentication.getPrincipal();
@@ -33,5 +45,10 @@ public class DashboardController {
         }
 
         return "dashboard";
+
+        // Add attributes to the model
+        model.addAttribute("top3Courses", courseStatsService.getTop3PopularCourses());
+        // Return the dashboard
+        return "dashboard"; // Ensure this maps to an actual view
     }
 }

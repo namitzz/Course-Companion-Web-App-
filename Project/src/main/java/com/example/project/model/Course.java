@@ -11,8 +11,16 @@ public class Course {
     private String title;
     private String description;
 
-    // Getters and Setters
+    // Default constructor
+    public Course() {}
 
+    // Constructor with title and description
+    public Course(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
