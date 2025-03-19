@@ -62,18 +62,18 @@ public class DataSeeder implements CommandLineRunner {
         course4 = courseRepository.save(course4);
 
         // Seed Completed Courses (Child records)
-        CompletedCourse completedCourse1 = new CompletedCourse(user1, course1);
-        CompletedCourse completedCourse2 = new CompletedCourse(user1, course2);
-        CompletedCourse completedCourse3 = new CompletedCourse(user2, course2);
-        CompletedCourse completedCourse4 = new CompletedCourse(user2, course3);
-        CompletedCourse completedCourse5 = new CompletedCourse(user2, course2);
+        //CompletedCourse completedCourse1 = new CompletedCourse(user1, course1);
+        //CompletedCourse completedCourse2 = new CompletedCourse(user1, course2);
+        //CompletedCourse completedCourse3 = new CompletedCourse(user2, course2);
+        //CompletedCourse completedCourse4 = new CompletedCourse(user2, course3);
+        //CompletedCourse completedCourse5 = new CompletedCourse(user2, course2);
 
         // Save child records
-        completedCourseRepository.save(completedCourse1);
-        completedCourseRepository.save(completedCourse2);
-        completedCourseRepository.save(completedCourse3);
-        completedCourseRepository.save(completedCourse4);
-        completedCourseRepository.save(completedCourse5);
+        //completedCourseRepository.save(completedCourse1);
+        //completedCourseRepository.save(completedCourse2);
+        //completedCourseRepository.save(completedCourse3);
+        //completedCourseRepository.save(completedCourse4);
+        //completedCourseRepository.save(completedCourse5);
 
         // Print message
         System.out.println("Dummy data added to the database!");

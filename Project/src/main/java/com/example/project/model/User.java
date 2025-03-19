@@ -29,6 +29,9 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CompletedCourse> completedCourses = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Goal> goals = new HashSet<>();
+
     // Default constructor
     public User() {}
 
