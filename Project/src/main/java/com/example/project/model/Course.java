@@ -5,11 +5,11 @@ import jakarta.persistence.*;
 @Entity
 public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generates the ID
     private Long id;
 
-    private String title;
-    private String description;
+    private String title; // Title of the course
+    private String description; // Description of the course
 
     // Default constructor
     public Course() {}

@@ -5,32 +5,31 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "users")
+@Entity // Marks this class as a JPA entity
+@Table(name = "users") // Specifies the table name in the database
 public class User implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // Marks this field as the primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generates the ID
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false) // Ensures username is unique and not null
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = false) // Ensures password is not null
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
+    @ElementCollection(fetch = FetchType.EAGER) // Roles are eagerly fetched
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id")) // Roles stored in a separate table
+    @Column(name = "role") // Column name for roles
     private Set<String> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER) // One user can have many badges
     private Set<Badge> badges = new HashSet<>();
 
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // One user can have many completed courses
     private Set<CompletedCourse> completedCourses = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true) // Goals are removed when user is deleted
     private Set<Goal> goals = new HashSet<>();
 
     // Default constructor
@@ -40,14 +39,14 @@ public class User implements Serializable {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.roles = new HashSet<>(); // Default empty roles set
+        this.roles = new HashSet<>(); // Initialize empty roles set
     }
 
     // Constructor with username, password, and roles
     public User(String username, String password, Set<String> roles) {
         this.username = username;
         this.password = password;
-        this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();
+        this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>(); // Initialize roles if provided
     }
 
     // Getters and Setters
@@ -66,7 +65,7 @@ public class User implements Serializable {
     public Set<String> getRoles() { return roles; }
 
     public void setRoles(Set<String> roles) {
-        this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();
+        this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>(); // Ensure non-null roles set
     }
 
     public Set<Badge> getBadges() { return badges; }
