@@ -21,9 +21,19 @@
             <a th:href="@{/register}" class="btn">Register</a>
         </div>
     </form>
+    <div
+        th:if="${success}" style="color: GREEN;" class="alert alert-success">
+    <p th:text="${success}"></p>
+</div>
+
+<div th:if="${error}" style="color: red;" class="alert alert-danger">
+    <p th:text="${error}"></p>
+</div>
 
     <p th:if="${param.error}" style="color: red;">Invalid username or password</p>
     <p th:if="${param.logout}" style="color: green;">You have been logged out</p>
 </div>
+
+
 </body>
 </html>
