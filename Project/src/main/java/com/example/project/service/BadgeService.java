@@ -69,5 +69,9 @@ public class BadgeService {
         badge.setName(badgeName);
         badge.setUser(user);
         badgeRepository.save(badge);
+
+        // Refresh user data to update the badge list
+        user = userRepository.findById(user.getId()).orElse(null);
     }
+
 }
