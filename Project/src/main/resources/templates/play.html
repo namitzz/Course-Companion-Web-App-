@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Play Flashcard Game</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        #streakMessage {
+            display: none;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #f59e0b;
+            margin-top: 10px;
+            animation: fadeInOut 2s ease;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: scale(0.95); }
+            10% { opacity: 1; transform: scale(1.1); }
+            90% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.95); }
+        }
+
+        .button-group {
+            margin-top: 10px;
+        }
+
+        .button-group button,
+        .button-group a {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Flashcard Challenge</h1>
+
+<label>Select Timer:
+    <select id="timerSelect">
+        <option value="0">Unlimited</option>
+        <option value="120">2 Minutes</option>
+        <option value="300">5 Minutes</option>
+        <option value="600">10 Minutes</option>
+    </select>
+</label>
+
+<div class="button-group">
+    <button onclick="startGame()">Start Game</button>
+    <a href="/index.html"><button>Back to Home</button></a>
+</div>
+
+<div id="timerDisplay"></div>
+
+<!-- Game Area -->
+<div id="gameArea" style="display:none;">
+    <h2 id="questionText"></h2>
+    <input type="text" id="userAnswer" placeholder="Your Answer" autocomplete="off">
+    <button onclick="submitAnswer()">Submit</button>
+    <button onclick="endGameEarly()" class="end-game-button">End Game</button>
+    <div id="feedback"></div>
+    <div id="streakMessage"></div>
+</div>
+
+<!-- Summary Area -->
+<div id="summary" style="display:none;">
+    <h2>Game Summary</h2>
+    <p id="summaryText"></p>
+    <a href="/play.html"><button>Play Again</button></a>
+    <a href="/index.html"><button>Back to Home</button></a>
+</div>
+
+<script>
+    let currentQuestion = null;
+    let timer = null;
+    let timeLeft = 0;
+
+    let totalQuestions = 0;
+    let correctAnswers = 0;
+    let questionsQueue = [];
+
+    let streakCount = 0;
+
+    async function startGame() {
+        document.getElementById('feedback').textContent = '';
+        document.getElementById('userAnswer').value = '';
+        document.getElementById('gameArea').style.display = 'block';
+        document.getElementById('summary').style.display = 'none';
+        document.getElementById('streakMessage').style.display = 'none';
+
+        totalQuestions = 0;
+        correctAnswers = 0;
+        streakCount = 0;
+
+        const selectedTime = parseInt(document.getElementById('timerSelect').value);
+        timeLeft = selectedTime;
+
+        const res = await fetch('/api/flashcards');
+        questionsQueue = await res.json();
+
+        if (questionsQueue.length === 0) {
+            document.getElementById('questionText').textContent = 'No flashcards available.';
+            return;
+        }
+
+        if (selectedTime > 0) {
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timerDisplay').textContent = `Time left: ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    showSummary(true);
+                }
+            }, 1000);
+        } else {
+            document.getElementById('timerDisplay').textContent = 'Unlimited time';
+        }
+
+        loadNextQuestion();
+        document.getElementById('userAnswer').focus();
+    }
+
+    function loadNextQuestion() {
+        if (questionsQueue.length === 0) {
+            showSummary(false);
+            return;
+        }
+
+        currentQuestion = questionsQueue.shift();
+        document.getElementById('questionText').textContent = `Question: ${currentQuestion.question}`;
+    }
+
+    function submitAnswer() {
+        const userAnswer = document.getElementById('userAnswer').value.trim();
+        const isCorrect = userAnswer.toLowerCase() === currentQuestion.answer.toLowerCase();
+
+        totalQuestions++;
+        if (isCorrect) {
+            correctAnswers++;
+            streakCount++;
+            showFeedback("✅ Correct!");
+            if (streakCount >= 3) {
+                showStreakMessage(`🔥 x${streakCount}`);
+            }
+        } else {
+            streakCount = 0;
+            showFeedback(`❌ Wrong! Correct answer was: ${currentQuestion.answer}`);
+            hideStreakMessage();
+        }
+
+        document.getElementById('userAnswer').value = '';
+
+        if (questionsQueue.length === 0) {
+            if (timer) clearInterval(timer);
+            setTimeout(() => showSummary(false), 1000);
+        } else {
+            setTimeout(() => {
+                document.getElementById('feedback').textContent = '';
+                loadNextQuestion();
+            }, 1000);
+        }
+    }
+
+    function showFeedback(message) {
+        document.getElementById('feedback').textContent = message;
+    }
+
+    function showStreakMessage(message) {
+        const streakEl = document.getElementById('streakMessage');
+        streakEl.textContent = message;
+        streakEl.style.display = 'block';
+        streakEl.style.animation = 'none';
+        void streakEl.offsetWidth;
+        streakEl.style.animation = 'fadeInOut 2s ease';
+        setTimeout(() => {
+            streakEl.style.display = 'none';
+        }, 2000);
+    }
+
+    function hideStreakMessage() {
+        document.getElementById('streakMessage').style.display = 'none';
+    }
+
+    function endGameEarly() {
+        if (timer) clearInterval(timer);
+        showSummary(false);
+    }
+
+    function showSummary(timerExpired) {
+        if (timer) clearInterval(timer);
+        document.getElementById('gameArea').style.display = 'none';
+        document.getElementById('summary').style.display = 'block';
+
+        const summaryText = timerExpired
+            ? `⏱ Time's up!`
+            : `✅ Game ended!`;
+
+        document.getElementById('summaryText').innerHTML = `
+            ${summaryText}<br><br>
+            📊 Total Questions Answered: ${totalQuestions}<br>
+            ✔️ Correct Answers: ${correctAnswers}<br>
+            ❌ Incorrect Answers: ${totalQuestions - correctAnswers}<br>
+            🎯 Score: ${(correctAnswers / totalQuestions * 100 || 0).toFixed(1)}%
+        `;
+    }
+
+    // Keyboard support
+    document.addEventListener('keydown', (e) => {
+        const userInputFocused = document.activeElement === document.getElementById('userAnswer');
+        if (e.key === 'Enter' && userInputFocused) {
+            e.preventDefault();
+            submitAnswer();
+        }
+        if (e.key === 'Escape') {
+            endGameEarly();
+        }
+    });
+</script>
+</body>
+</html>
