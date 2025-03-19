@@ -35,19 +35,19 @@ public class DataSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
         // Clear existing data (optional)
-        completedCourseRepository.deleteAll();
-        courseRepository.deleteAll();
-        userRepository.deleteAll();
-        courseStatsRepository.deleteAll();
+        // completedCourseRepository.deleteAll();
+        // courseRepository.deleteAll();
+        // userRepository.deleteAll();
+        // courseStatsRepository.deleteAll();
 
         // Seed CourseStats data
         courseStatsRepository.save(new CourseStats(5, 300)); // 5 courses completed, 300 minutes spent
 
         // Seed Users
-        User user1 = new User("John Doe", "password123");
-        User user2 = new User("Jane Smith", "password456");
-        user1 = userRepository.save(user1); // Save parent record first
-        user2 = userRepository.save(user2);
+        // User user1 = new User("John Doe", "password123");
+        // User user2 = new User("Jane Smith", "password456");
+        // user1 = userRepository.save(user1); // Save parent record first
+        // user2 = userRepository.save(user2);
 
         // Seed Courses
         Course course1 = new Course("Java Basics", "Learn the basics of Java programming.");
