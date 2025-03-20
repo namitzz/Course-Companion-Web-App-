@@ -20,7 +20,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/dashboard", "/profile", "/badges").authenticated()  // Secure pages
+                        .requestMatchers("/dashboard", "/profile", "/badges", "/goals").authenticated()  // Secure pages
                         .requestMatchers("/api/streaks/**", "/register", "/login").permitAll()  // Allow Streaks API and auth endpoints
                         .anyRequest().permitAll()
                 )
