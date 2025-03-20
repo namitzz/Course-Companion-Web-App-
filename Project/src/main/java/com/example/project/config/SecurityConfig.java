@@ -13,20 +13,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    private final UserService userService;
 
-    public SecurityConfig(UserService userService) {
-        this.userService = userService;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/dashboard", "/profile").authenticated()  // Secure pages
-                        .requestMatchers("/api/streaks/**").permitAll()  // Allow Streaks API
+                        .requestMatchers("/dashboard", "/profile", "/badges").authenticated()  // Secure pages
+                        .requestMatchers("/api/streaks/**", "/register", "/login").permitAll()  // Allow Streaks API and auth endpoints
                         .anyRequest().permitAll()
                 )
                 .formLogin(login -> login
@@ -40,7 +35,13 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout=true")
                         .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")
                         .permitAll()
+                )
+                .sessionManagement(session -> session
+                        .maximumSessions(1)
+                        .expiredUrl("/login?expired=true")
                 );
 
         return http.build();

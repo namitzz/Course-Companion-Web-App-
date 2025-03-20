@@ -5,43 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Stats</title>
 
-
+    <!-- Bootstrap for styling -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <!-- Chart.js for graphical representation -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <!-- Poppins font for modern typography -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
         /* General Styling */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
+
 
         .container {
-            max-width: 900px;
-            margin: 30px auto;
+            max-width: 560px;
+            margin: 20px;
             padding: 20px;
             background: white;
             border-radius: 15px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
         }
 
-        h1, h2 {
-            text-align: center;
+        h2 {
+            font-size: 28px;
+            font-weight: 600;
             color: #2575fc;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: slideDown 0.5s ease-in-out;
         }
 
         .stats-container {
-            background-color: #f8f9fa;
-            border-radius: 15px;
             padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 10px;
+            background: #ffffff;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
 
         .stats-container:hover {
@@ -51,106 +51,99 @@
 
         .stats-container p {
             font-size: 16px;
+            color: #333;
+            margin: 10px 0;
         }
 
         .stats-container p strong {
             color: #2575fc;
         }
 
-        ul.top-courses {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        ul.top-courses li {
-            background-color: #e9ecef;
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: bold;
-        }
-
         canvas {
             margin-top: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
     </style>
 </head>
 <body>
+
 <div class="container">
-    <h1>Course Statistics</h1>
-
-    <!-- General Stats Section -->
-    <div class="stats-container">
-        <h2>Overview</h2>
+    <h2>Student Course Stats</h2>
+    <center><div class="stats-container">
         <p><strong>Completed Courses:</strong> <span id="completed" th:text="${completedCourses}"></span></p>
-        <p><strong>Total Time Spent:</strong> <span id="studyTime" th:text="${totalTimeSpent}"></span> minutes</p>
         <p><strong>Active Courses:</strong> <span id="active" th:text="${activeCourses}"></span></p>
-    </div>
+        <p><strong>Total Study Time:</strong> <span id="studyTime" th:text="${totalTimeSpent}"></span> minutes</p>
 
-    <!-- Top Courses Section -->
-    <div class="stats-container">
-        <h2>Top 3 Most Popular Courses</h2>
-        <ul class="top-courses">
-            <li th:each="course : ${top3Courses}" th:text="${course}"></li>
-        </ul>
-    </div>
-
-    <!-- Chart Section -->
-    <div class="stats-container">
-        <h2>Course Distribution</h2>
+        <!-- Pie Chart -->
         <canvas id="courseChart"></canvas>
-    </div>
+    </div></center>
+
 </div>
 
-<!-- Chart.js Script -->
 <script>
+    // Fetching stats from Thymeleaf variables
+    const completedCourses = parseInt(document.getElementById("completed").innerText);
+    const activeCourses = parseInt(document.getElementById("active").innerText);
+    const totalTimeSpent = parseInt(document.getElementById("studyTime").innerText);
 
-    const completedCourses = parseInt(document.getElementById("completed")?.innerText || "0");
-    const activeCourses = parseInt(document.getElementById("active")?.innerText || "0");
-
-
-    if (isNaN(completedCourses) || isNaN(activeCourses)) {
-        console.error("Invalid data for chart rendering: Completed Courses or Active Courses is NaN.");
-    } else {
-
-        const ctx = document.getElementById('courseChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Completed Courses', 'Active Courses'],
-                datasets: [{
-                    data: [completedCourses, activeCourses],
-                    backgroundColor: ['#4CAF50', '#FF9800'],
-                    borderColor: ['#388E3C', '#F57C00'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { position: 'bottom' },
-                    tooltip: {
-                        callbacks: {
-                            label(context) {
-                                let label = context.label || '';
-                                if (label) { label += ': '; }
-                                label += context.raw + ' courses';
-                                return label;
+    // Creating a Chart.js pie chart
+    const ctx = document.getElementById('courseChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Completed Courses', 'Active Courses'],
+            datasets: [{
+                data: [completedCourses, activeCourses],
+                backgroundColor: ['#4CAF50', '#FF9800'],
+                borderColor: ['#388E3C', '#F57C00'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
                             }
+                            label += context.raw + ' courses';
+                            return label;
                         }
                     }
-                },
-                animation: {
-                    duration: 1000,
-                    easing: 'easeInOutQuad'
                 }
+            },
+            animation: {
+                duration: 1000,
+                easing: 'easeInOutQuad'
             }
-        });
-    }
+        }
+    });
 </script>
 
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

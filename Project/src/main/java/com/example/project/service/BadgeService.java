@@ -7,33 +7,29 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service // Marks this class as a Spring service
+@Service
 public class BadgeService {
 
-    @Autowired // Injects UserRepository
+    @Autowired
     private UserRepository userRepository;
 
-    @Autowired // Injects CourseRepository
+    @Autowired
     private CourseRepository courseRepository;
 
-    @Autowired // Injects CompletedCourseRepository
+    @Autowired
     private CompletedCourseRepository completedCourseRepository;
 
-    @Autowired // Injects BadgeRepository
+    @Autowired
     private BadgeRepository badgeRepository;
 
-    /**
-     * Marks a course as completed for a user and awards badges if applicable.
-     */
     public void completeCourse(Long userId, Long courseId) {
-        // Fetch user and course, throw exceptions if not found
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
 
-        // Check if the user has already completed the course
+        // Check if the user has already completed this course
         if (completedCourseRepository.existsByUserAndCourseId(user, courseId)) {
             throw new RuntimeException("Course already completed by the user");
         }
@@ -44,18 +40,14 @@ public class BadgeService {
         completedCourse.setCourse(course);
         completedCourseRepository.save(completedCourse);
 
-        // Check and award badges based on completed courses
+        // Check and award badges
         checkAndAwardBadges(user);
     }
 
-    /**
-     * Checks the number of completed courses and awards badges if conditions are met.
-     */
     private void checkAndAwardBadges(User user) {
         List<CompletedCourse> completedCourses = completedCourseRepository.findByUser(user);
         int completedCount = completedCourses.size();
 
-        // Award badges based on completion milestones
         if (completedCount >= 5 && !userHasBadge(user, "Bronze Learner")) {
             awardBadge(user, "Bronze Learner");
         }
@@ -67,23 +59,18 @@ public class BadgeService {
         }
     }
 
-    /**
-     * Checks if the user already has a specific badge.
-     */
     private boolean userHasBadge(User user, String badgeName) {
         return user.getBadges().stream().anyMatch(badge -> badge.getName().equals(badgeName));
     }
 
-    /**
-     * Awards a badge to the user and updates the database.
-     */
     private void awardBadge(User user, String badgeName) {
         Badge badge = new Badge();
-        badge.setName(badgeName); // Set badge name
-        badge.setUser(user); // Assign badge to user
-        badgeRepository.save(badge); // Save badge to database
+        badge.setName(badgeName);
+        badge.setUser(user);
+        badgeRepository.save(badge);
 
-        // Refresh user data to include the new badge
+        // Refresh user data to update the badge list
         user = userRepository.findById(user.getId()).orElse(null);
     }
+
 }

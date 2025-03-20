@@ -2,16 +2,16 @@ package com.example.project.model;
 
 import jakarta.persistence.*;
 
-@Entity // Marks this class as a JPA entity
+@Entity
 public class Badge {
-    @Id // Marks this field as the primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generates the ID
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name; // Name of the badge
+    private String name;
 
-    @ManyToOne // Many badges can belong to one user
-    @JoinColumn(name = "user_id") // Foreign key column in the database
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     // Getters and Setters
@@ -43,25 +43,27 @@ public class Badge {
     // Helper methods to manage the relationship with User
 
     /**
-     * Assigns this badge to a user and updates the user's badge set.
+     * Sets the user for this badge and updates the user's badge set.
+     * This ensures consistency in the bidirectional relationship.
      */
     public void assignToUser(User user) {
         if (this.user != null) {
-            this.user.getBadges().remove(this); // Remove from old user
+            this.user.getBadges().remove(this); // Remove this badge from the old user
         }
-        this.user = user; // Set new user
+        this.user = user; // Set the new user
         if (user != null) {
-            user.getBadges().add(this); // Add to new user's badge set
+            user.getBadges().add(this); // Add this badge to the new user's badge set
         }
     }
 
     /**
      * Removes this badge from its current user.
+     * This ensures consistency in the bidirectional relationship.
      */
     public void removeFromUser() {
         if (this.user != null) {
-            this.user.getBadges().remove(this); // Remove from user
-            this.user = null; // Clear user reference
+            this.user.getBadges().remove(this); // Remove this badge from the user
+            this.user = null; // Clear the user reference
         }
     }
 }

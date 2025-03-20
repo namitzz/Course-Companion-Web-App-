@@ -7,12 +7,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.Set;
 
 @SpringBootApplication
-@EnableScheduling // Enables Scheduling
 public class Application implements CommandLineRunner {
 
     private final UserInfoRepository userInfoRepository;
