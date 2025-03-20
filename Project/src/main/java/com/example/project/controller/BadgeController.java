@@ -10,20 +10,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Controller
+@Controller // Spring MVC Controller
 public class BadgeController {
 
-    @Autowired
+    @Autowired // Inject BadgeService
     private BadgeService badgeService;
 
-    @Autowired
+    @Autowired // Inject UserService
     private UserService userService;
 
-    // Display the user's badges and course completion status
+    /**
+     * GET /badges - Display user badges and completed courses.
+     */
     @GetMapping("/badges")
     public String viewBadges(@RequestParam(required = false) Long userId, Model model) {
         if (userId == null) {
-            model.addAttribute("error", "User ID is required.");
+            model.addAttribute("error", "User ID required.");
             return "badges";
         }
 
@@ -33,6 +35,7 @@ public class BadgeController {
             return "badges";
         }
 
+        // Add user data to model
         model.addAttribute("user", user);
         model.addAttribute("badges", user.getBadges());
         model.addAttribute("completedCourses", user.getCompletedCourses());
@@ -40,32 +43,34 @@ public class BadgeController {
         return "badges";
     }
 
-    // Handle course completion and badge awarding
+    /**
+     * POST /complete-course - Mark course as completed and award badges.
+     */
     @PostMapping("/complete-course")
     public String completeCourse(@RequestParam Long userId, @RequestParam(required = false) String courseId, Model model) {
         try {
             if (courseId == null || courseId.trim().isEmpty()) {
-                model.addAttribute("error", "Course ID cannot be empty.");
+                model.addAttribute("error", "Course ID required.");
                 return viewBadges(userId, model);
             }
 
-            // Convert courseId to Long safely
+            // Convert courseId to Long
             Long courseIdLong;
             try {
                 courseIdLong = Long.parseLong(courseId.trim());
             } catch (NumberFormatException e) {
-                model.addAttribute("error", "Invalid Course ID. Please enter a valid number.");
+                model.addAttribute("error", "Invalid Course ID.");
                 return viewBadges(userId, model);
             }
 
-            // Mark the course as completed and check for badges
+            // Complete course and check for badges
             badgeService.completeCourse(userId, courseIdLong);
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
-            return viewBadges(userId, model); // Return to the badges page with an error message
+            return viewBadges(userId, model);
         }
 
-        // Redirect to the badges page to show updated information
+        // Redirect to badges page
         return "redirect:/badges?userId=" + userId;
     }
 }
