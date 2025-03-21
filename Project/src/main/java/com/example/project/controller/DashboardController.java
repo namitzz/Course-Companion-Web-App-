@@ -1,6 +1,7 @@
 package com.example.project.controller;
 
 import com.example.project.model.User;
+import com.example.project.service.CourseStatsService;
 import com.example.project.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,13 +9,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
 public class DashboardController {
 
     private final UserService userService;
+    private final CourseStatsService courseStatsService;
 
-    public DashboardController(UserService userService) {
+    public DashboardController(UserService userService, CourseStatsService courseStatsService) {
         this.userService = userService;
+        this.courseStatsService = courseStatsService;
     }
 
     @GetMapping("/dashboard")
@@ -25,6 +30,9 @@ public class DashboardController {
 
         User user = userService.getUserByUsername(userDetails.getUsername());
         model.addAttribute("user", user);
+
+        List<String> top3Courses = courseStatsService.getTop3PopularCourses();
+        model.addAttribute("top3Courses", top3Courses);
 
         return "dashboard"; // Return the Thymeleaf view
     }
