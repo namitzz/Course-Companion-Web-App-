@@ -6,6 +6,95 @@
 
   <!-- Link to the external CSS file for styling -->
   <link rel="stylesheet" th:href="@{/css/styles.css}">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: white;
+      padding: 20px;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    .sidebar h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+    }
+
+    .sidebar .nav-link {
+      color: black;
+      padding: 10px 15px;
+      margin: 5px 0;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600; /* Same font weight as the dashboard title */
+    }
+
+    .sidebar .nav-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(10px);
+    }
+
+    .goal-container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 100%;
+      max-width: 600px;
+      animation: fadeIn 1s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden; /* Prevents content from overflowing */
+      flex-grow: 1; /* Allows it to grow when new content is added */
+      min-height: 400px; /* Ensures the container doesn't shrink too small */
+      margin-left: 250px; /* Space for sidebar */
+    }
+
+    /* Dropdown Styling */
+    select {
+      width: 106.25%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      background: white;
+      color: black;
+      border-radius: 8px;
+      outline: none;
+      font-size: 16px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    select:focus {
+      border-color: #2575fc;
+      box-shadow: 0 0 8px rgba(37, 117, 252, 0.3);
+    }
+
+    .form-group {
+      width: 100%;
+      text-align: left;
+      margin-bottom: 15px;
+    }
+  </style>
 
   <script>
     // JavaScript function to set the goal title based on the dropdown selection
@@ -27,6 +116,15 @@
   </script>
 </head>
 <body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <h2>Goals Tracker</h2>
+  <ul class="nav flex-column">
+    <li class="nav-item"><a href="/dashboard" class="nav-link">Dashboard</a></li>
+    <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
+  </ul>
+</div>
 
 <!-- Main container for the Add Goal page -->
 <div class="goal-container">
@@ -53,7 +151,7 @@
 
     <!-- Input for custom goal title -->
     <label>Goal Title:</label>
-    <input type="text" name="title" id="goalTitle" required pattern=".*\S.*" title="Title cannot be empty or whitespace">
+    <input type="text" name="title" id="goalTitle" required pattern=".*\S.*" title="Title cannot be empty or whitespace" maxlength="50">
     <!-- The input is required and cannot contain only whitespace -->
 
     <!-- Input fields for the goal duration -->

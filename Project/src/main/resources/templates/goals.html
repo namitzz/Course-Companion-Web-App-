@@ -52,35 +52,88 @@
       transform: translateX(10px);
     }
 
-    /* Content Area */
-    .container {
+    /* Goal Container */
+    .goal-container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px 40px 20px 20px; /* Increase the right padding to 40px */
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 100%;
+      max-width: 800px;
+      animation: fadeIn 1s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden; /* Prevents content from overflowing */
+      flex-grow: 1; /* Allows it to grow when new content is added */
+      min-height: 400px; /* Ensures the container doesn't shrink too small */
       margin-left: 250px; /* Space for sidebar */
-      padding: 20px;
+      max-height: 800px;  /* Set a max height for the goal container */
+      overflow-y: auto;   /* Enable vertical scrolling */
+    }
+
+    /* Goal List Item */
+    .li-goal {
+      background: white;
+      color: #333;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .li-goal:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Goal Info (Title and Expiration Date) */
+    .goal-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      flex: 1;
+    }
+
+    /* Goal Actions (Buttons) */
+    .goal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      align-items: center;
     }
 
     /* Button styling */
-    button {
+    .goal-actions button {
       padding: 10px 20px;
       background-color: #2575fc;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 14px;
     }
 
-    button:hover {
+    .goal-actions button:hover {
       background-color: #205acb;
     }
 
     /* Delete Button Styling */
-    .delete-btn {
+    .goal-actions .delete-btn {
       background-color: red;
       color: white;
     }
 
-    .delete-btn:hover {
+    .goal-actions .delete-btn:hover {
       background-color: darkred;
     }
+
   </style>
 </head>
 <body>
@@ -95,7 +148,7 @@
 </div>
 
 <!-- Main Content -->
-<div class="container">
+<div class="goal-container">
   <h1>Goals Tracker</h1>
 
   <!-- Active Goals Section -->
@@ -103,17 +156,21 @@
     <h2>Active Goals</h2>
     <button onclick="window.location.href='/goals/addGoal'">+ Add New Goal</button>
     <ul>
-      <li th:each="goal : ${activeGoals}">
-        <span th:text="${goal.title}"></span>
-        <span th:inline="text">(Expires [[${#temporals.format(goal.expiresAt, 'MMM dd, yyyy HH:mm')}]])</span>
-        <button th:onclick="|window.location.href='/goals/edit/' + ${goal.id}|">Edit</button>
-        <form th:action="@{/goals/{id}/complete(id=${goal.id})}" method="POST">
-          <button type="submit">Complete</button>
-        </form>
-        <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
-          <input type="hidden" name="_method" value="DELETE" />
-          <button type="submit" class="delete-btn">Delete</button>
-        </form>
+      <li th:each="goal : ${activeGoals}" class="li-goal">
+        <div class="goal-info">
+          <span th:text="${goal.title}"></span>
+          <span th:inline="text">(Expires [[${#temporals.format(goal.expiresAt, 'MMM dd, yyyy HH:mm')}]])</span>
+        </div>
+        <div class="goal-actions">
+          <button th:onclick="|window.location.href='/goals/edit/' + ${goal.id}|">Edit</button>
+          <form th:action="@{/goals/{id}/complete(id=${goal.id})}" method="POST">
+            <button type="submit">Complete</button>
+          </form>
+          <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
+            <input type="hidden" name="_method" value="DELETE" />
+            <button type="submit" class="delete-btn">Delete</button>
+          </form>
+        </div>
       </li>
     </ul>
   </section>
@@ -122,13 +179,17 @@
   <section>
     <h2>Expired Goals</h2>
     <ul>
-      <li th:each="goal : ${expiredGoals}">
-        <span th:text="${goal.title}"></span>
-        <span th:inline="text">(Expired [[${#temporals.format(goal.expiresAt, 'MMM dd, yyyy HH:mm')}]])</span>
-        <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
-          <input type="hidden" name="_method" value="DELETE" />
-          <button type="submit" class="delete-btn">Delete</button>
-        </form>
+      <li th:each="goal : ${expiredGoals}" class="li-goal">
+        <div class="goal-info">
+          <span th:text="${goal.title}"></span>
+          <span th:inline="text">(Expired [[${#temporals.format(goal.expiresAt, 'MMM dd, yyyy HH:mm')}]])</span>
+        </div>
+        <div class="goal-actions">
+          <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
+            <input type="hidden" name="_method" value="DELETE" />
+            <button type="submit" class="delete-btn">Delete</button>
+          </form>
+        </div>
       </li>
     </ul>
   </section>
@@ -137,13 +198,17 @@
   <section>
     <h2>Completed Goals</h2>
     <ul>
-      <li th:each="goal : ${completedGoals}">
-        <span th:text="${goal.title}"></span>
-        (Completed [[${#temporals.format(goal.completedAt, 'MMM dd, yyyy HH:mm')}]])
-        <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
-          <input type="hidden" name="_method" value="DELETE" />
-          <button type="submit" class="delete-btn">Delete</button>
-        </form>
+      <li th:each="goal : ${completedGoals}" class="li-goal">
+        <div class="goal-info">
+          <span th:text="${goal.title}"></span>
+          (Completed [[${#temporals.format(goal.completedAt, 'MMM dd, yyyy HH:mm')}]])
+        </div>
+        <div class="goal-actions">
+          <form th:action="@{/goals/{id}/delete(id=${goal.id})}" method="POST">
+            <input type="hidden" name="_method" value="DELETE" />
+            <button type="submit" class="delete-btn">Delete</button>
+          </form>
+        </div>
       </li>
     </ul>
   </section>

@@ -1,4 +1,4 @@
-package com.example.project.repo;
+package com.example.project.repository;
 // Imported packages
 import com.example.project.entity.SearchEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

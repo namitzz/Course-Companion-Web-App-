@@ -1,7 +1,7 @@
 package com.example.project.service;
 
 import com.example.project.entity.SearchEntity;
-import com.example.project.repo.SearchRepository;
+import com.example.project.repository.SearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
