@@ -147,6 +147,10 @@
                 </div>
             </div>
         </div>
+        <h2>Top 3 Courses</h2>
+        <ul>
+            <li th:each="course : ${top3Courses}" th:text="${course}"></li>
+        </ul>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
