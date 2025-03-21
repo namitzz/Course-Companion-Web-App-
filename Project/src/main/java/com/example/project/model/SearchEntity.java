@@ -1,4 +1,4 @@
-package com.example.project.entity;
+package com.example.project.model;
 
 // Imported packages
 import jakarta.persistence.Entity;

@@ -1,6 +1,6 @@
 package com.example.project.service;
 
-import com.example.project.entity.CourseStats;
+import com.example.project.model.CourseStats;
 import com.example.project.repository.CompletedCourseRepository;
 import com.example.project.repository.CourseStatsRepository;
 import org.springframework.data.domain.PageRequest;

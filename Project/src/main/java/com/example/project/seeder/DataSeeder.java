@@ -1,9 +1,7 @@
 package com.example.project.seeder;
 
-import com.example.project.entity.CourseStats;
+import com.example.project.model.CourseStats;
 import com.example.project.model.Course;
-import com.example.project.model.CompletedCourse;
-import com.example.project.model.User;
 import com.example.project.repository.CourseRepository;
 import com.example.project.repository.CompletedCourseRepository;
 import com.example.project.repository.CourseStatsRepository;

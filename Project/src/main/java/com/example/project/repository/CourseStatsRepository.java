@@ -1,6 +1,6 @@
 package com.example.project.repository;
 
-import com.example.project.entity.CourseStats;
+import com.example.project.model.CourseStats;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

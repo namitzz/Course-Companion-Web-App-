@@ -1,7 +1,7 @@
 package com.example.project.controller;
 
 // Imported packages
-import com.example.project.entity.SearchEntity;
+import com.example.project.model.SearchEntity;
 import com.example.project.service.FilterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

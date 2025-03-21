@@ -1,6 +1,6 @@
 package com.example.project.repository;
 // Imported packages
-import com.example.project.entity.SearchEntity;
+import com.example.project.model.SearchEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 // SearchRepository interface

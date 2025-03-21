@@ -1,6 +1,6 @@
 package com.example.project.controller;
 
-import com.example.project.entity.CourseStats;
+import com.example.project.model.CourseStats;
 import com.example.project.service.CourseStatsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

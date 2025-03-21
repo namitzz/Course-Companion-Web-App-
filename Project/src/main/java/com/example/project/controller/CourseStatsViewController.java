@@ -1,6 +1,6 @@
 package com.example.project.controller;
 
-import com.example.project.entity.CourseStats;
+import com.example.project.model.CourseStats;
 import com.example.project.service.CourseStatsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
