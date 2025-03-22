@@ -17,6 +17,16 @@
             color: #333;
         }
 
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+
         .navbar {
             background: linear-gradient(135deg, #6a11cb, #2575fc);
             padding: 1rem;
@@ -79,15 +89,13 @@
     <a href="/logout" class="logout-btn">Logout</a>
 </nav>
 <!-- Main Content -->
+<div class="container">
 <h1>Create New Flashcard</h1>
 <form id="flashcardForm">
     <input type="text" id="question" placeholder="Enter question" required>
     <input type="text" id="answer" placeholder="Enter answer" required>
     <button type="submit">Add Flashcard</button>
 </form>
-
-<h2>Current Flashcards</h2>
-<ul id="flashcardList"></ul>
 
 <!-- Navigation Buttons -->
 <div class="navigation-buttons" style="text-align: center; margin-top: 30px;">
@@ -97,6 +105,9 @@
     <a href="/play">
         <button style="margin-left: 10px;">Play Game</button>
     </a>
+
+    <h2>Current Flashcards</h2>
+    <ul id="flashcardList"></ul>
 </div>
 
 <script>
