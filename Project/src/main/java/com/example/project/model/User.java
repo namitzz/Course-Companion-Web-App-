@@ -1,14 +1,11 @@
 package com.example.project.model;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,47 +16,58 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
-    private Set<String> roles = new HashSet<>();
+    @Column(nullable = false)
+    private String email;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Badge> badges = new HashSet<>();
-
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<CompletedCourse> completedCourses = new HashSet<>();
+    @Column(nullable = false)
+    private String gender;
 
     public User() {}
 
-    public User(String username, String password, Set<String> roles) {
+    public User(String username, String password, String email, String gender) {
         this.username = username;
         this.password = password;
-        this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();
+        this.email = email;
+        this.gender = gender;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-
-    public Set<String> getRoles() { return roles; }
-    public void setRoles(Set<String> roles) {
-        this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();
+    public Long getId() {
+        return id;
     }
 
-    public Set<Badge> getBadges() { return badges; }
-    public void setBadges(Set<Badge> badges) {
-        this.badges = badges;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Set<CompletedCourse> getCompletedCourses() { return completedCourses; }
-    public void setCompletedCourses(Set<CompletedCourse> completedCourses) {
-        this.completedCourses = completedCourses;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }
