@@ -1,9 +1,6 @@
 package com.example.project.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Flashcard {
@@ -15,13 +12,19 @@ public class Flashcard {
     private String question;
     private String answer;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user; // Associate flashcard with user
+
     public Flashcard() {}
 
-    public Flashcard(String question, String answer) {
+    public Flashcard(String question, String answer, User user) {
         this.question = question;
         this.answer = answer;
+        this.user = user;
     }
 
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -30,4 +33,9 @@ public class Flashcard {
 
     public String getAnswer() { return answer; }
     public void setAnswer(String answer) { this.answer = answer; }
+
+    public User getUser() {return user;}
+    public void setUser(User user) {this.user = user;}
 }
+
+
