@@ -74,14 +74,43 @@
             color: #333;
         }
 
+        h3 {
+            font-family: 'Poppins', sans-serif;
+            color: black;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+
         .container {
             max-width: 800px;
-            margin: 20px;
+            margin-top: 80px;
             padding: 30px;
             background: white;
             border-radius: 15px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             animation: fadeIn 1s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .results-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .results-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .results-container::-webkit-scrollbar-thumb {
+            background: #2575fc;
+            border-radius: 4px;
+        }
+
+        .results-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
         }
 
         h2 {
@@ -94,10 +123,8 @@
         }
 
         form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
         }
 
         input, select, button {
@@ -130,6 +157,7 @@
         ul {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
 
         li {
@@ -211,6 +239,7 @@
 
     <!-- Results -->
     <h3>Results:</h3>
+    <div class="results-container">
     <ul>
         <li th:each="course : ${results}">
             <strong th:text="${course.name}"></strong> -
@@ -220,6 +249,7 @@
     </ul>
 
     <p th:if="${#lists.isEmpty(results)}" class="no-results">No courses found.</p>
+    </div>
 </div>
 
 <!-- Include Bootstrap JS -->
