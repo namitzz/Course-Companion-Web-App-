@@ -11,14 +11,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/profile")
 public class ProfileController {
 
     private final UserRepository userRepository;
-
     public ProfileController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -39,8 +43,12 @@ public class ProfileController {
 
     @PostMapping("/edit")
     public String updateProfile(@RequestParam String name,
+                                @RequestParam String bio,
                                 @RequestParam String email,
                                 @RequestParam String gender,
+                                @RequestParam String pronouns,
+                                @RequestParam String address,
+                                @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
                                 Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/login";
@@ -52,9 +60,23 @@ public class ProfileController {
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
                 user.setUsername(name);
+                user.setBio(bio);
                 user.setEmail(email);
                 user.setGender(gender);
+                user.setPronouns(pronouns);
+                user.setAddress(address);
 
+                if (profileImage != null && !profileImage.isEmpty()) {
+                    try {
+                        String uploadDir = "src\\main\\resources/";
+                        Files.createDirectories(Paths.get(uploadDir));
+                        Path path = Paths.get(uploadDir + profileImage.getOriginalFilename());
+                        Files.write(path, profileImage.getBytes());
+                        user.setProfileImagePath("/uploads/" + profileImage.getOriginalFilename());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 userRepository.save(user);
                 return "redirect:/dashboard?success=profile_updated";
             }

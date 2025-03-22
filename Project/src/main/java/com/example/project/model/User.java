@@ -1,11 +1,14 @@
 package com.example.project.model;
 
 import jakarta.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
-
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,43 +19,95 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    private Set<String> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Badge> badges = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<CompletedCourse> completedCourses = new HashSet<>();
+
+    @Column(length = 500)
+    private String bio;
+
+    @Column(name = "profile_image_path")
+    private String profileImagePath;
+
+
+    private String gender;
+
+    private String pronouns;
+
     private String email;
 
-    @Column(nullable = false)
-    private String gender;
+    private String address;
+
 
     public User() {}
 
-    public User(String username, String password, String email, String gender) {
+    public User(String username, String password, Set<String> roles) {
         this.username = username;
         this.password = password;
-        this.email = email;
+        this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
+    }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public Set<String> getRoles() { return roles; }
+    public void setRoles(Set<String> roles) {
+        this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();
+    }
+
+    public Set<Badge> getBadges() { return badges; }
+    public void setBadges(Set<Badge> badges) {
+        this.badges = badges;
+    }
+
+    public Set<CompletedCourse> getCompletedCourses() { return completedCourses; }
+    public void setCompletedCourses(Set<CompletedCourse> completedCourses) {
+        this.completedCourses = completedCourses;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
-    public Long getId() {
-        return id;
+    public String getPronouns() {
+        return pronouns;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPronouns(String pronouns) {
+        this.pronouns = pronouns;
     }
 
     public String getEmail() {
@@ -63,11 +118,11 @@ public class User {
         this.email = email;
     }
 
-    public String getGender() {
-        return gender;
+    public String getAddress() {
+        return address;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
