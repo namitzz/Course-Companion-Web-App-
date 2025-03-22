@@ -22,15 +22,15 @@ public class StreakPageController {
     @GetMapping("/streak")
     public String showStreakPage(Model model, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
-            return "redirect:/login"; // ✅ Redirect if not logged in
+            return "redirect:/login"; // Redirect if not logged in
         }
 
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails userDetails) {
-            User user = userService.getUserByUsername(userDetails.getUsername());  // ✅ Fetch user properly
-            model.addAttribute("userId", user.getId());  // ✅ Send `userId` to Thymeleaf
+            User user = userService.getUserByUsername(userDetails.getUsername());  // Fetch user properly
+            model.addAttribute("userId", user.getId());  // Send `userId` to Thymeleaf
         }
 
-        return "streak";  // ✅ Renders `streak.html`
+        return "streak";  // Renders `streak.html`
     }
 }
