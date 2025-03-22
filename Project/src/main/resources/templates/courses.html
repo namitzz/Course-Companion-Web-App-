@@ -11,6 +11,57 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <style>
         /* General Styling */
+        .navbar {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+        .navbar .navbar-links {
+            display: flex;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #a8a6a6;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #a8a6a6;
+        }
+
+        .navbar .logout-btn {
+            background-color: #dc3545;
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .navbar .logout-btn:hover {
+            background-color: #c82333;
+        }
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #6a11cb, #2575fc);
@@ -166,7 +217,13 @@
     </style>
 </head>
 <body>
-
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="navbar-links">
+        <a href="/dashboard">Dashboard</a>
+    </div>
+    <a href="/logout" class="logout-btn">Logout</a>
+</nav>
 <div class="container">
     <h1>Course Manager</h1>
 
