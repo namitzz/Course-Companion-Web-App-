@@ -100,6 +100,17 @@
         .card:hover {
             animation: bounce 0.5s;
         }
+
+        .top-courses {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .top-courses .card {
+            flex: 1;
+            margin: 0 10px;
+        }
     </style>
 </head>
 <body>
@@ -150,9 +161,11 @@
             </div>
         </div>
         <h2>Top 3 Courses</h2>
-        <ul>
-            <li th:each="course : ${top3Courses}" th:text="${course}"></li>
-        </ul>
+        <div class="top-courses">
+            <div class="card" th:each="course : ${top3Courses}">
+                <h5 th:text="${course}"></h5>
+            </div>
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
