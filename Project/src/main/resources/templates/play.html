@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -28,20 +29,11 @@
             top: 0;
             left: 0;
             right: 0;
-        }
-        .navbar .navbar-links {
-            display: flex;
-        }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            z-index: 1000;
         }
 
-        .navbar a:hover {
-            color: #a8a6a6;
+        .navbar .navbar-links {
+            display: flex;
         }
 
         .navbar a {
@@ -68,6 +60,7 @@
         .navbar .logout-btn:hover {
             background-color: #c82333;
         }
+
         #streakMessage {
             display: none;
             text-align: center;
@@ -103,43 +96,61 @@
     </div>
     <a href="/logout" class="logout-btn">Logout</a>
 </nav>
-<!-- Main Content -->
-<h1>Flashcard Challenge</h1>
 
-<label>Select Timer:
-    <select id="timerSelect">
-        <option value="0">Unlimited</option>
-        <option value="120">2 Minutes</option>
-        <option value="300">5 Minutes</option>
-        <option value="600">10 Minutes</option>
-    </select>
-</label>
+<!-- Main Content Container -->
+<div class="container mt-5 pt-5">
+    <div class="card p-4 shadow-lg" style="background-color: white; border-radius: 1rem;">
+        <h1 class="mb-3">Flashcard Challenge</h1>
 
-<div class="button-group">
-    <button onclick="startGame()">Start Game</button>
-    <a href="/flashcard"><button>Back</button></a>
+        <label class="form-label">Select Timer:
+            <select id="timerSelect" class="form-select w-auto d-inline-block ms-2">
+                <option value="0">Unlimited</option>
+                <option value="120">2 Minutes</option>
+                <option value="300">5 Minutes</option>
+                <option value="600">10 Minutes</option>
+            </select>
+        </label>
+
+        <div class="button-group my-3">
+            <button class="btn btn-primary" onclick="startGame()">Start Game</button>
+            <a href="/flashcard"><button class="btn btn-secondary">Back</button></a>
+        </div>
+
+        <div id="timerDisplay" class="mb-3 fw-bold"></div>
+
+        <!-- Game Area -->
+        <div id="gameArea" style="display:none;">
+            <h2 id="questionText" class="mb-3"></h2>
+            <input type="text" id="userAnswer" placeholder="Your Answer" autocomplete="off" class="form-control mb-2">
+            <button class="btn btn-success me-2" onclick="submitAnswer()">Submit</button>
+            <button class="btn btn-danger" onclick="endGameEarly()">End Game</button>
+            <div id="feedback" class="mt-3 fw-semibold"></div>
+            <div id="streakMessage"></div>
+        </div>
+
+        <!-- Summary Area -->
+        <div id="summary" style="display:none;" class="mt-4 text-center">
+            <h2 class="mb-4">Game Summary</h2>
+            <div class="mb-3 fw-bold fs-5" id="summaryText"></div>
+
+            <div class="d-flex justify-content-center gap-4 mb-3">
+                <span class="badge bg-primary fs-6"> Total: <span id="totalQ"></span></span>
+                <span class="badge bg-success fs-6"> Correct: <span id="correctQ"></span></span>
+                <span class="badge bg-danger fs-6"> Incorrect: <span id="wrongQ"></span></span>
+            </div>
+
+            <div class="progress mb-4" style="height: 25px;">
+                <div id="scoreBar" class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                     role="progressbar" style="width: 0%">0%</div>
+            </div>
+
+            <a href="/play"><button class="btn btn-primary me-2">Play Again</button></a>
+            <a href="/flashcard"><button class="btn btn-secondary"> Back</button></a>
+        </div>
+    </div>
 </div>
 
-<div id="timerDisplay"></div>
-
-<!-- Game Area -->
-<div id="gameArea" style="display:none;">
-    <h2 id="questionText"></h2>
-    <input type="text" id="userAnswer" placeholder="Your Answer" autocomplete="off">
-    <button onclick="submitAnswer()">Submit</button>
-    <button onclick="endGameEarly()" class="end-game-button">End Game</button>
-    <div id="feedback"></div>
-    <div id="streakMessage"></div>
-</div>
-
-<!-- Summary Area -->
-<div id="summary" style="display:none;">
-    <h2>Game Summary</h2>
-    <p id="summaryText"></p>
-    <a href="/play"><button>Play Again</button></a>
-    <a href="/flashcard"><button>Back</button></a>
-</div>
-
+<!-- JavaScript -->
 <script>
     let currentQuestion = null;
     let timer = null;
@@ -208,13 +219,13 @@
         if (isCorrect) {
             correctAnswers++;
             streakCount++;
-            showFeedback("✅ Correct!");
+            showFeedback(" Correct!");
             if (streakCount >= 3) {
-                showStreakMessage(`🔥 x${streakCount}`);
+                showStreakMessage(` x${streakCount}`);
             }
         } else {
             streakCount = 0;
-            showFeedback(`❌ Wrong! Correct answer was: ${currentQuestion.answer}`);
+            showFeedback(` Wrong! Correct answer was: ${currentQuestion.answer}`);
             hideStreakMessage();
         }
 
@@ -261,20 +272,23 @@
         document.getElementById('gameArea').style.display = 'none';
         document.getElementById('summary').style.display = 'block';
 
+        const scorePercent = (correctAnswers / totalQuestions * 100 || 0).toFixed(1);
+
         const summaryText = timerExpired
             ? `⏱ Time's up!`
-            : `✅ Game ended!`;
+            : `Game ended!`;
 
-        document.getElementById('summaryText').innerHTML = `
-            ${summaryText}<br><br>
-            📊 Total Questions Answered: ${totalQuestions}<br>
-            ✔️ Correct Answers: ${correctAnswers}<br>
-            ❌ Incorrect Answers: ${totalQuestions - correctAnswers}<br>
-            🎯 Score: ${(correctAnswers / totalQuestions * 100 || 0).toFixed(1)}%
-        `;
+        document.getElementById('summaryText').innerHTML = summaryText;
+
+        document.getElementById('totalQ').textContent = totalQuestions;
+        document.getElementById('correctQ').textContent = correctAnswers;
+        document.getElementById('wrongQ').textContent = totalQuestions - correctAnswers;
+
+        const progressBar = document.getElementById('scoreBar');
+        progressBar.style.width = `${scorePercent}%`;
+        progressBar.textContent = `${scorePercent}%`;
     }
 
-    // Keyboard support
     document.addEventListener('keydown', (e) => {
         const userInputFocused = document.activeElement === document.getElementById('userAnswer');
         if (e.key === 'Enter' && userInputFocused) {

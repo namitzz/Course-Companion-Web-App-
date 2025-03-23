@@ -1,7 +1,9 @@
 package com.example.project.service;
 
+import com.example.project.model.MysteryBoxReward;
 import com.example.project.model.Streak;
 import com.example.project.model.User;
+import com.example.project.repository.MysteryBoxRewardRepository;
 import com.example.project.repository.StreakRepository;
 import com.example.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +20,17 @@ public class StreakService {
 
     private final StreakRepository streakRepository;
     private final UserRepository userRepository;
+    private final MysteryBoxRewardRepository rewardRepository;
 
-    private static final List<String> MYSTERY_REWARDS = List.of("Bonus XP", "Exclusive Badge", "Discount Code", "Extra Points");
+    private static final List<String> MYSTERY_REWARDS = List.of(
+            "Bonus XP", "Exclusive Badge", "Discount Code", "Extra Points"
+    );
 
     public Streak getUserStreak(Long userId) {
         return streakRepository.findByUserId(userId).orElseGet(() -> {
             Streak newStreak = new Streak();
             newStreak.setUserId(userId);
-            return newStreak;
+            return streakRepository.save(newStreak);
         });
     }
 
@@ -41,15 +46,17 @@ public class StreakService {
                 });
 
         LocalDate today = LocalDate.now();
-        if (streak.getLastActivityDate() == null || !streak.getLastActivityDate().equals(today.minusDays(1))) {
-            streak.setStreakCount(1); // Reset streak if not consecutive
+        LocalDate lastDate = streak.getLastActivityDate();
+
+        if (lastDate == null || !lastDate.equals(today.minusDays(1))) {
+            streak.setStreakCount(1);
         } else {
-            streak.setStreakCount(streak.getStreakCount() + 1); // Increment streak
+            streak.setStreakCount(streak.getStreakCount() + 1);
         }
 
         streak.setLastActivityDate(today);
 
-        // Unlock a mystery box at streak milestones
+        // Unlock box every 5-day streak
         streak.setMysteryBoxAvailable(streak.getStreakCount() % 5 == 0);
 
         return streakRepository.save(streak);
@@ -63,11 +70,17 @@ public class StreakService {
             return "No mystery box available. Keep your streak going!";
         }
 
-        // Select a random reward
         String reward = MYSTERY_REWARDS.get(new Random().nextInt(MYSTERY_REWARDS.size()));
-        streak.setMysteryBoxAvailable(false); // Mark the box as claimed
 
+        // Save reward
+        MysteryBoxReward rewardEntity = new MysteryBoxReward();
+        rewardEntity.setUserId(userId);
+        rewardEntity.setReward(reward);
+        rewardRepository.save(rewardEntity);
+
+        streak.setMysteryBoxAvailable(false);
         streakRepository.save(streak);
-        return "Congratulations! You won a: " + reward;
+
+        return reward;
     }
 }
