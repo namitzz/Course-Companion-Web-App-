@@ -24,12 +24,27 @@ public class User implements Serializable {
     @Column(name = "role")
     private Set<String> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Badge> badges = new HashSet<>();
-
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CompletedCourse> completedCourses = new HashSet<>();
+
+    @Column(length = 500)
+    private String bio;
+
+    @Column(name = "profile_image_path")
+    private String profileImagePath;
+
+
+    private String gender;
+
+    private String pronouns;
+
+    private String email;
+
+    private String address;
+
 
     public User() {}
 
@@ -37,6 +52,22 @@ public class User implements Serializable {
         this.username = username;
         this.password = password;
         this.roles = roles != null ? new HashSet<>(roles) : new HashSet<>();
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
     }
 
     public Long getId() { return id; }
@@ -61,5 +92,37 @@ public class User implements Serializable {
     public Set<CompletedCourse> getCompletedCourses() { return completedCourses; }
     public void setCompletedCourses(Set<CompletedCourse> completedCourses) {
         this.completedCourses = completedCourses;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getPronouns() {
+        return pronouns;
+    }
+
+    public void setPronouns(String pronouns) {
+        this.pronouns = pronouns;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
