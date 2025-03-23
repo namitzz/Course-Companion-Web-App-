@@ -5,22 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grade Tracker</title>
     <link rel="stylesheet" th:href="@{/static/css/styles.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #6a11cb, #2575fc);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
+            padding-top: 80px;
+            color: #333;
         }
 
         .navbar {
             background: linear-gradient(135deg, #6a11cb, #2575fc);
-            padding: 1rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -28,49 +25,90 @@
             top: 0;
             left: 0;
             right: 0;
-        }
-        .navbar .navbar-links {
-            display: flex;
-        }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .navbar a:hover {
-            color: #a8a6a6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 999;
         }
 
         .navbar a {
             color: white;
             text-decoration: none;
-            margin: 0 10px;
             font-weight: 500;
-            transition: all 0.3s ease;
+            margin-left: 15px;
+            transition: color 0.3s ease;
         }
 
         .navbar a:hover {
-            color: #a8a6a6;
+            color: #ccc;
         }
 
-        .navbar .logout-btn {
+        .logout-btn {
             background-color: #dc3545;
             padding: 8px 16px;
             border-radius: 8px;
             color: white;
             font-weight: 500;
-            transition: all 0.3s ease;
+            border: none;
+            transition: background 0.3s ease;
         }
 
-        .navbar .logout-btn:hover {
+        .logout-btn:hover {
             background-color: #c82333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            animation: fadeIn 0.7s ease-in-out;
+        }
+
+        h1 {
+            color: #2575fc;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        button {
+            margin: 10px;
+            padding: 12px 24px;
+            background: #2575fc;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: #1a5bbf;
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            button {
+                width: 100%;
+                margin-top: 15px;
+            }
         }
     </style>
 </head>
 <body>
+
 <!-- Navigation Bar -->
 <nav class="navbar">
     <div class="navbar-links">
@@ -78,10 +116,13 @@
     </div>
     <a href="/logout" class="logout-btn">Logout</a>
 </nav>
-<div>
+
+<!-- Main Section -->
+<div class="container">
     <h1>Welcome to Grade Tracker</h1>
     <a href="/grades"><button>Manage Grades</button></a>
     <a href="/deadlines"><button>Manage Deadlines</button></a>
 </div>
+
 </body>
 </html>

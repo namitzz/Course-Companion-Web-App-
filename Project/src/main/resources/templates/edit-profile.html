@@ -7,86 +7,100 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
   <link rel="stylesheet" href="/css/style.css">
   <style>
-    /* General Styling */
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #6a11cb, #2575fc);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      color: #333;
       margin: 0;
+      padding: 60px 0;
     }
 
-    /* Profile Container */
     .profile-container {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      text-align: center;
-      width: 100%;
-      max-width: 400px;
-      animation: fadeIn 1s ease-in-out;
+      background: #fff;
+      padding: 40px 50px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      max-width: 960px;
+      margin: auto;
+      animation: fadeIn 0.8s ease-in-out;
     }
 
-    /* Profile Image */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
     .profile-image {
-      width: 120px;
-      height: 120px;
+      width: 140px;
+      height: 140px;
       border-radius: 50%;
       object-fit: cover;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
     }
 
-    /* Headings */
-    h2 {
+    .profile-header h2 {
+      margin: 0;
+      font-size: 28px;
       color: #2575fc;
       font-weight: 600;
-      margin-bottom: 20px;
-      text-align: center;
-      font-size: 24px;
+    }
+
+    .profile-header p {
+      margin: 5px 0 0;
+      font-size: 16px;
+      color: #555;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 30px;
     }
 
     label {
-      font-size: 16px;
-      font-weight: 500;
-      color: #333;
-      text-align: left;
       display: block;
-      margin-top: 10px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: #333;
     }
 
-    /* Input Fields */
     input, textarea, select {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ddd;
-      background: white;
-      color: black;
+      padding: 12px;
+      border: 1px solid #ccc;
       border-radius: 8px;
-      outline: none;
       font-size: 16px;
-      transition: all 0.3s ease-in-out;
+      background-color: #f9f9f9;
+      transition: border-color 0.3s ease;
     }
 
     input:focus, textarea:focus, select:focus {
       border-color: #2575fc;
-      box-shadow: 0 0 8px rgba(37, 117, 252, 0.3);
+      box-shadow: 0 0 6px rgba(37, 117, 252, 0.3);
+      outline: none;
+      background: #fff;
     }
 
-    /* Button Styling */
+    textarea {
+      resize: vertical;
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
     .button-group {
+      grid-column: span 2;
       display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: 20px;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 10px;
     }
 
     button, .btn {
-      padding: 12px 24px;
+      padding: 12px 28px;
       background: #2575fc;
       color: white;
       border: none;
@@ -94,11 +108,8 @@
       font-size: 16px;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.3s ease-in-out;
-      flex: 1;
-      text-align: center;
+      transition: background 0.3s ease, transform 0.2s ease;
       text-decoration: none;
-      display: inline-block;
     }
 
     button:hover, .btn:hover {
@@ -107,48 +118,85 @@
     }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .profile-container {
+        padding: 30px;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
+
+      .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      form {
+        grid-template-columns: 1fr;
+      }
+
+      .full-width {
+        grid-column: span 1;
+      }
+
+      .button-group {
+        flex-direction: column;
+        align-items: stretch;
       }
     }
   </style>
 </head>
 <body>
 <div class="profile-container">
-  <img th:src="${user.profileImagePath}" alt="Profile Image" class="profile-image" onerror="this.src='/images/default-profile.png'">
-  <h2 th:text="${user.username}"></h2>
-  <p th:text="${user.bio}"></p>
+  <div class="profile-header">
+    <img th:src="${user.profileImagePath}" alt="Profile Image" class="profile-image" onerror="this.src='/images/default-profile.png'">
+    <div>
+      <h2 th:text="${user.username}">Your Name</h2>
+      <p th:text="${user.bio}">Short bio goes here</p>
+    </div>
+  </div>
 
   <form th:action="@{/profile/edit}" method="post" enctype="multipart/form-data">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" th:value="${user.username}" required>
+    <div class="full-width">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" th:value="${user.username}" required>
+    </div>
 
-    <label for="bio">Bio:</label>
-    <textarea id="bio" name="bio" rows="3" th:text="${user.bio}" required></textarea>
+    <div class="full-width">
+      <label for="bio">Bio:</label>
+      <textarea id="bio" name="bio" rows="3" th:text="${user.bio}" required></textarea>
+    </div>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" th:value="${user.email}" required>
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" th:value="${user.email}" required>
+    </div>
 
-    <label for="pronouns">Pronouns:</label>
-    <input type="text" id="pronouns" name="pronouns" th:value="${user.pronouns}" required>
+    <div>
+      <label for="pronouns">Pronouns:</label>
+      <input type="text" id="pronouns" name="pronouns" th:value="${user.pronouns}" required>
+    </div>
 
-    <label for="address">Address:</label>
-    <input type="text" id="address" name="address" th:value="${user.address}" required>
+    <div>
+      <label for="address">Address:</label>
+      <input type="text" id="address" name="address" th:value="${user.address}" required>
+    </div>
 
-    <label for="gender">Gender:</label>
-    <select id="gender" name="gender" required>
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-      <option value="Other">Other</option>
-    </select>
+    <div>
+      <label for="gender">Gender:</label>
+      <select id="gender" name="gender" required>
+        <option value="Male" th:selected="${user.gender == 'Male'}">Male</option>
+        <option value="Female" th:selected="${user.gender == 'Female'}">Female</option>
+        <option value="Other" th:selected="${user.gender == 'Other'}">Other</option>
+      </select>
+    </div>
 
-    <label for="profileImage">Profile Image:</label>
-    <input type="file" id="profileImage" name="profileImage" accept="image/*">
+    <div class="full-width">
+      <label for="profileImage">Profile Image:</label>
+      <input type="file" id="profileImage" name="profileImage" accept="image/*">
+    </div>
 
     <div class="button-group">
       <button type="submit">Update</button>

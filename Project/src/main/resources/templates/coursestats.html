@@ -5,42 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Stats</title>
 
-    <!-- Bootstrap for styling -->
+    <!-- Bootstrap -->
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Chart.js for graphical representation -->
+
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Poppins font for modern typography -->
+
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            margin: 0;
+            padding-top: 70px;
+            color: #333;
+        }
 
         .navbar {
             background: linear-gradient(135deg, #6a11cb, #2575fc);
             padding: 1rem;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             position: fixed;
             top: 0;
-            left: 0;
-            right: 0;
-        }
-        .navbar .navbar-links {
-            display: flex;
-        }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .navbar a:hover {
-            color: #a8a6a6;
+            width: 100%;
+            z-index: 1000;
         }
 
         .navbar a {
@@ -48,123 +39,150 @@
             text-decoration: none;
             margin: 0 10px;
             font-weight: 500;
-            transition: all 0.3s ease;
         }
 
         .navbar a:hover {
-            color: #a8a6a6;
+            color: #ddd;
         }
 
-        .navbar .logout-btn {
+        .logout-btn {
             background-color: #dc3545;
             padding: 8px 16px;
             border-radius: 8px;
             color: white;
             font-weight: 500;
-            transition: all 0.3s ease;
         }
 
-        .navbar .logout-btn:hover {
+        .logout-btn:hover {
             background-color: #c82333;
         }
 
         .container {
-            max-width: 560px;
-            margin: 20px;
-            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+            padding: 30px 20px;
             background: white;
-            border-radius: 15px;
+            border-radius: 16px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             animation: fadeIn 1s ease-in-out;
         }
 
         h2 {
-            font-size: 28px;
             font-weight: 600;
             color: #2575fc;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             text-align: center;
-            animation: slideDown 0.5s ease-in-out;
         }
 
-        .stats-container {
+        .stat-box {
+            text-align: center;
             padding: 20px;
+            background-color: #f8f9fa;
             border-radius: 10px;
-            background: #ffffff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
         }
 
-        .stats-container:hover {
+        .stat-box:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .stats-container p {
-            font-size: 16px;
-            color: #333;
-            margin: 10px 0;
-        }
-
-        .stats-container p strong {
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
             color: #2575fc;
         }
 
         canvas {
             margin-top: 20px;
-            animation: fadeIn 1s ease-in-out;
         }
 
-        /* Animations */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes slideDown {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
+        @media (max-width: 768px) {
+            .stat-box {
+                margin-bottom: 20px;
             }
         }
     </style>
 </head>
 <body>
-<!-- Navigation Bar -->
-<nav class="navbar">
-    <div class="navbar-links">
+
+<!-- Navigation -->
+<nav class="navbar d-flex justify-content-between align-items-center">
+    <div>
         <a href="/dashboard">Dashboard</a>
     </div>
     <a href="/logout" class="logout-btn">Logout</a>
 </nav>
+
+<!-- Main Content -->
 <div class="container">
-    <h2>Student Course Stats</h2>
-    <center><div class="stats-container">
-        <p><strong>Completed Courses:</strong> <span id="completed" th:text="${completedCourses}"></span></p>
-        <p><strong>Active Courses:</strong> <span id="active" th:text="${activeCourses}"></span></p>
-        <p><strong>Total Study Time:</strong> <span id="studyTime" th:text="${totalTimeSpent}"></span> minutes</p>
+    <h2> Student Course Statistics</h2>
 
-        <!-- Pie Chart -->
-        <canvas id="courseChart"></canvas>
-    </div></center>
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="stat-box">
+                <p><strong>Completed Courses</strong></p>
+                <h4 id="completed" th:text="${completedCourses}">0</h4>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="stat-box">
 
+                <p><strong>Active Courses</strong></p>
+                <h4 id="active" th:text="${activeCourses}">0</h4>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="stat-box">
+                <p><strong>Total Study Time</strong></p>
+                <h4><span id="studyTime" th:text="${totalTimeSpent}">0</span> mins</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie Chart -->
+    <div class="row">
+        <div class="col-md-6 offset-md-3 mb-4">
+            <div class="stat-box">
+                <h5 class="mb-3"> Course Summary</h5>
+                <canvas id="courseChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Additional Small Charts -->
+    <div class="row mt-4">
+        <!-- Bar Chart -->
+        <div class="col-md-6 mb-4">
+            <div class="stat-box">
+                <h5 class="mb-3">Study Time by Subject</h5>
+                <canvas id="barChart" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- Doughnut Chart -->
+        <div class="col-md-6 mb-4">
+            <div class="stat-box">
+                <h5 class="mb-3"> Assignment Progress</h5>
+                <canvas id="doughnutChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
 </div>
 
+<!-- Scripts -->
 <script>
-    // Fetching stats from Thymeleaf variables
-    const completedCourses = parseInt(document.getElementById("completed").innerText);
-    const activeCourses = parseInt(document.getElementById("active").innerText);
-    const totalTimeSpent = parseInt(document.getElementById("studyTime").innerText);
+    const completedCourses = parseInt(document.getElementById("completed").innerText) || 0;
+    const activeCourses = parseInt(document.getElementById("active").innerText) || 0;
 
-    // Creating a Chart.js pie chart
+    // Pie Chart: Course Summary
     const ctx = document.getElementById('courseChart').getContext('2d');
     new Chart(ctx, {
         type: 'pie',
@@ -184,19 +202,56 @@
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            let label = context.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
-                            label += context.raw + ' courses';
-                            return label;
+                            return `${context.label}: ${context.raw} courses`;
                         }
                     }
                 }
             },
             animation: {
-                duration: 1000,
+                duration: 1200,
                 easing: 'easeInOutQuad'
+            }
+        }
+    });
+
+    // Bar Chart: Study Time by Subject
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: ['AI', 'OOP', 'Databases', 'Networks', 'Web Dev'],
+            datasets: [{
+                label: 'Hours',
+                data: [12, 9, 7, 5, 8],
+                backgroundColor: '#42a5f5',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+
+    // Doughnut Chart: Assignment Progress
+    const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+    new Chart(doughnutCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Completed', 'Pending'],
+            datasets: [{
+                data: [14, 6],
+                backgroundColor: ['#66bb6a', '#ef5350'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                legend: { position: 'bottom' }
             }
         }
     });

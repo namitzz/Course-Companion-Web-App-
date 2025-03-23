@@ -23,7 +23,10 @@ public class StreakService {
     private final MysteryBoxRewardRepository rewardRepository;
 
     private static final List<String> MYSTERY_REWARDS = List.of(
-            "Bonus XP", "Exclusive Badge", "Discount Code", "Extra Points"
+            "Bonus XP", "Being cool badge", "5 Pound discount", "Extra Points" ,"Daily Boost",
+            " Profile Glow",
+            "Double XP",
+            "Secret Achievement"
     );
 
     public Streak getUserStreak(Long userId) {

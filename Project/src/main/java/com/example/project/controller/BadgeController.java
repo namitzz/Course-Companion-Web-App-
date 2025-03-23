@@ -67,5 +67,6 @@ public class BadgeController {
 
         // Redirect to the badges page to show updated information
         return "redirect:/badges?userId=" + userId;
+
     }
 }

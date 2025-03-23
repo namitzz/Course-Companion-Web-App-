@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class StreakController {
 
     private final StreakService streakService;
-    private final UserService userService;  // ✅ Inject UserService
+    private final UserService userService;  // Inject UserService
 
     @Autowired
     public StreakController(StreakService streakService, UserService userService) {
@@ -32,7 +32,7 @@ public class StreakController {
 
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails userDetails) {
-            User user = userService.getUserByUsername(userDetails.getUsername());  // ✅ Fetch user properly
+            User user = userService.getUserByUsername(userDetails.getUsername());  // Fetch user properly
             return ResponseEntity.ok(streakService.getUserStreak(user.getId()));
         }
 
@@ -47,7 +47,7 @@ public class StreakController {
 
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails userDetails) {
-            User user = userService.getUserByUsername(userDetails.getUsername());  // ✅ Corrected user fetching
+            User user = userService.getUserByUsername(userDetails.getUsername());  //  Corrected user fetching
             streakService.updateStreak(user.getId());
             return ResponseEntity.ok("Streak updated!");
         }
@@ -63,7 +63,7 @@ public class StreakController {
 
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails userDetails) {
-            User user = userService.getUserByUsername(userDetails.getUsername());  // ✅ Proper user retrieval
+            User user = userService.getUserByUsername(userDetails.getUsername());  // Proper user retrieval
             return ResponseEntity.ok(streakService.claimMysteryBox(user.getId()));
         }
 

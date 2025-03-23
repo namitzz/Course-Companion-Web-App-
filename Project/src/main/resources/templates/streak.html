@@ -61,8 +61,9 @@
             text-align: center;
             width: 80%;
             max-width: 400px;
-            animation: fadeIn 1s ease-in-out;
+            animation: fadeIn 0.6s ease-in-out;
             color: black;
+            z-index: 1;
         }
         .btn-lg {
             font-size: 18px;
@@ -89,6 +90,55 @@
             background-color: #1e7e34;
             transform: translateY(-2px);
         }
+        .modal-box {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            transition: opacity 0.3s ease;
+        }
+        .modal-box.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .box {
+            width: 220px;
+            height: 220px;
+            perspective: 1000px;
+            position: relative;
+        }
+        .face {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            border-radius: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+            text-align: center;
+            line-height: 220px;
+            position: absolute;
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
+            transition: transform 1s ease-in-out;
+        }
+        .front {
+            background: linear-gradient(135deg, gold, orange);
+        }
+        .back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, lightgreen, green);
+        }
+        .box.animate .front {
+            transform: rotateY(180deg);
+        }
+        .box.animate .back {
+            transform: rotateY(0deg);
+        }
     </style>
 </head>
 <body>
@@ -106,12 +156,20 @@
     <button class="btn btn-success btn-lg" onclick="claimMysteryBox()" id="claim-btn" disabled>Claim Mystery Box</button>
 </div>
 
+<!-- Mystery Box Modal -->
+<div id="mysteryModal" class="modal-box hidden">
+    <div class="box">
+        <div class="face front">🎁</div>
+        <div class="face back" id="reward-text">Reward</div>
+    </div>
+</div>
 
-    <script th:inline="javascript">
-        const userId = [[${userId}]];
-
-async function fetchStreak() {
-        if (userId === '0') {
+<script th:inline="javascript">
+    const userId = [[${userId}]];
+</script>
+<script>
+    async function fetchStreak() {
+        if (!userId || userId === 0) {
             console.error("User ID is not set.");
             return;
         }
@@ -136,7 +194,7 @@ async function fetchStreak() {
     }
 
     async function updateStreak() {
-        if (userId === '0') {
+        if (!userId || userId === 0) {
             console.error("User ID is not set.");
             return;
         }
@@ -151,7 +209,7 @@ async function fetchStreak() {
     }
 
     async function claimMysteryBox() {
-        if (userId === '0') {
+        if (!userId || userId === 0) {
             console.error("User ID is not set.");
             return;
         }
@@ -160,7 +218,19 @@ async function fetchStreak() {
             const response = await fetch(`/api/streaks/me/mystery-box`);
             if (!response.ok) throw new Error("Failed to claim mystery box.");
             const message = await response.text();
-            alert("Mystery Box Reward: " + message);
+
+            document.getElementById("reward-text").innerText = message;
+            const box = document.querySelector(".box");
+            const modal = document.getElementById("mysteryModal");
+
+            modal.classList.remove("hidden");
+            box.classList.add("animate");
+
+            setTimeout(() => {
+                modal.classList.add("hidden");
+                box.classList.remove("animate");
+            }, 4000);
+
             fetchStreak();
         } catch (error) {
             console.error("Error claiming mystery box:", error);
@@ -169,6 +239,5 @@ async function fetchStreak() {
 
     document.addEventListener("DOMContentLoaded", fetchStreak);
 </script>
-
 </body>
 </html>
