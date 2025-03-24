@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        /* Additional tweaks specific to the login page */
+        .login-container {
+            /* Ensure the container is centered and sized appropriately */
+            margin-top: 50px;
+        }
+        .show-password {
+            display: flex;
+            justify-content: center; /* centers the checkbox + label */
+            align-items: center;
+            margin-top: 5px;
+            font-size: 14px;
+            color: #2575fc;
+            gap: 5px;
+
+        }
+        .show-password input[type="checkbox"] {
+            width: auto;
+            height: auto;
+            box-shadow: none;
+            appearance: auto;
+            margin: 0;
+        }
+
+    </style>
 </head>
 <body>
 <div class="login-container">
@@ -15,25 +40,31 @@
 
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
+        <div class="show-password">
+            <input type="checkbox" id="togglePassword">
+            <label for="togglePassword">Show Password</label>
+        </div>
 
         <div class="button-group">
             <button type="submit">Login</button>
             <a th:href="@{/register}" class="btn">Register</a>
         </div>
     </form>
-    <div
-        th:if="${success}" style="color: GREEN;" class="alert alert-success">
-    <p th:text="${success}"></p>
-</div>
-
-<div th:if="${error}" style="color: red;" class="alert alert-danger">
-    <p th:text="${error}"></p>
-</div>
-
+    <div th:if="${success}" style="color: green;" class="alert alert-success">
+        <p th:text="${success}"></p>
+    </div>
+    <div th:if="${error}" style="color: red;" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
     <p th:if="${param.error}" style="color: red;">Invalid username or password</p>
     <p th:if="${param.logout}" style="color: green;">You have been logged out</p>
 </div>
-
-
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const passwordInput = document.querySelector('#password');
+    togglePassword.addEventListener('change', function () {
+        passwordInput.type = this.checked ? 'text' : 'password';
+    });
+</script>
 </body>
 </html>

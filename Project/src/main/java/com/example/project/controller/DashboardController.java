@@ -29,11 +29,19 @@ public class DashboardController {
         }
 
         User user = userService.getUserByUsername(userDetails.getUsername());
-        model.addAttribute("user", user);
 
+        // Add user info to the model
+        model.addAttribute("user", user);
+        model.addAttribute("xp", user.getXp());
+        model.addAttribute("level", user.getLevel());
+        model.addAttribute("userBadges", user.getBadges());
+
+
+        // Add top 3 popular courses
         List<String> top3Courses = courseStatsService.getTop3PopularCourses();
         model.addAttribute("top3Courses", top3Courses);
 
-        return "dashboard"; // Return the Thymeleaf view
+        return "dashboard"; // Thymeleaf view
     }
+
 }

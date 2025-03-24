@@ -125,4 +125,24 @@ public class User implements Serializable {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    private int xp = 0;
+    private int level = 1;
+
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
 }
