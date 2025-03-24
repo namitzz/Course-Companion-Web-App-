@@ -1,0 +1,13 @@
+1. Harman (11/03/25):
+As scum master I inspected team members initial user story ideas and helped them decide what they should pick for sprint 2 during our scrum meeting to best accommodate for each member's skill set.
+2. Denis (13/03/25):
+During the scrum meeting I looked through each member's finished user story, and we accepted or rejected stories that did not meet the requirements set out for the project based on the format of the stories, their quality and complexity level.
+3. Neel (16/03/25):
+Currently as the scrum master, my job is to make sure that everyone has started with their sprint 2 user stories. I made sure during out scrum meeting to remind everyone to start coding their user stories to make sure that the initial process of their sprint 2 user stories go smoothly for everyone.
+4. Raiyan (19/03/25):
+Currently a week before the project is due and as scrum master I am constantly contacting each member to ensure that everyone is on track to complete their sprint 2 story and ensuring that sprint 1 stories are completed and meet our Definition of Done before our internal deadline before merging takes place. This is being accomplished through the scrum meeting and direct messages to each member.
+5. Namit (22/03/25):
+Approaching the end of the last week leading up to the due date, made sure everyone did the final Testing, no ambiguity in the code , helped in updating over UI for each member user story and made sure that we were on track to deliver the project on time.
+6. Arshdip (24/03/25):
+For the final few days as scrum master, I ensured that the project was finished/in its final stages, and during the scrum meeting made sure that each member was aware of all the required tasks before the project is completed including the sprint 2 stories being added to the user manual, the demo video being made and comments on the issue board for all stories.
+
