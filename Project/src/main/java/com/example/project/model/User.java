@@ -126,7 +126,10 @@ public class User implements Serializable {
         this.address = address;
     }
 
+    @Column(name = "xp")
     private int xp = 0;
+
+    @Column(name = "level")
     private int level = 1;
 
     public int getXp() {
@@ -135,14 +138,25 @@ public class User implements Serializable {
 
     public void setXp(int xp) {
         this.xp = xp;
+        updateLevelFromXp();
     }
 
     public int getLevel() {
         return level;
     }
-
     public void setLevel(int level) {
         this.level = level;
     }
+
+    private void updateLevelFromXp() {
+        // Simple level-up formula: every 100 XP = 1 level
+        this.level = (xp / 100) + 1;
+    }
+
+    public void addXp(int amount) {
+        this.xp += amount;
+        updateLevelFromXp();
+    }
+
 
 }

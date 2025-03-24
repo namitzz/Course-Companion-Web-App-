@@ -22,6 +22,9 @@ public class BadgeService {
     @Autowired
     private BadgeRepository badgeRepository;
 
+    @Autowired
+    private UserService userService; // To award XP
+
     public void completeCourse(Long userId, Long courseId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -49,13 +52,13 @@ public class BadgeService {
         int completedCount = completedCourses.size();
 
         if (completedCount >= 5 && !userHasBadge(user, "Bronze Learner")) {
-            awardBadge(user, "Bronze Learner");
+            awardBadge(user, "Bronze Learner", 25);
         }
         if (completedCount >= 10 && !userHasBadge(user, "Silver Learner")) {
-            awardBadge(user, "Silver Learner");
+            awardBadge(user, "Silver Learner", 50);
         }
         if (completedCount >= 20 && !userHasBadge(user, "Gold Learner")) {
-            awardBadge(user, "Gold Learner");
+            awardBadge(user, "Gold Learner", 100);
         }
     }
 
@@ -63,14 +66,12 @@ public class BadgeService {
         return user.getBadges().stream().anyMatch(badge -> badge.getName().equals(badgeName));
     }
 
-    private void awardBadge(User user, String badgeName) {
+    private void awardBadge(User user, String badgeName, int xpAmount) {
         Badge badge = new Badge();
         badge.setName(badgeName);
         badge.setUser(user);
         badgeRepository.save(badge);
 
-        // Refresh user data to update the badge list
-        user = userRepository.findById(user.getId()).orElse(null);
+        userService.addXpToUser(user, xpAmount);
     }
-
 }

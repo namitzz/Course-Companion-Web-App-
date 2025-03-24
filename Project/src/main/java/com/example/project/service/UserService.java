@@ -1,12 +1,12 @@
 package com.example.project.service;
 
+import com.example.project.model.CompletedCourse;
+import com.example.project.model.Course;
 import com.example.project.model.User;
 import com.example.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -62,8 +62,42 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
+    /**
+     * Save the user without altering the password.
+     */
     public void save(User user) {
         userRepository.save(user);
     }
 
+    /**
+     * Add XP to a user and update their level.
+     */
+    public void addXpToUser(User user, int amount) {
+        user.setXp(user.getXp() + amount); // setXp will auto-update level
+        userRepository.save(user);
+    }
+
+    /**
+     * Reset XP and level.
+     */
+    public void resetXp(User user) {
+        user.setXp(0); // level will reset to 1 based on logic in User
+        userRepository.save(user);
+    }
+
+    /**
+     * Add a completed course and reward XP.
+     */
+    public void completeCourse(Long userId, Course course) {
+        User user = getUserById(userId);
+
+        CompletedCourse completedCourse = new CompletedCourse();
+        completedCourse.setUser(user);
+        completedCourse.setCourse(course);
+
+        user.getCompletedCourses().add(completedCourse);
+        user.addXp(50); // or any reward logic you want
+
+        userRepository.save(user);
+    }
 }
