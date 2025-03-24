@@ -32,24 +32,20 @@ public class XPController {
         return user.getLevel();
     }
 
-    // POST to manually add XP (e.g. admin or for testing)
+    // POST to manually add XP
     @PostMapping("/add")
     public String addXp(@AuthenticationPrincipal UserDetails userDetails, @RequestParam int amount) {
         User user = userService.getUserByUsername(userDetails.getUsername());
-        int newXp = user.getXp() + amount;
-        int newLevel = (newXp / 100) + 1;
-        user.setXp(newXp);
-        user.setLevel(newLevel);
+        user.setXp(user.getXp() + amount); // level updates automatically
         userService.save(user);
-        return "XP updated to " + newXp + ", Level: " + newLevel;
+        return "XP updated to " + user.getXp() + ", Level: " + user.getLevel();
     }
 
-    // Optional: POST to reset XP (for debug or gamification resets)
+    // POST to reset XP
     @PostMapping("/reset")
     public String resetXp(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userService.getUserByUsername(userDetails.getUsername());
-        user.setXp(0);
-        user.setLevel(1);
+        user.setXp(0); // resets level via setXp logic
         userService.save(user);
         return "XP reset successfully.";
     }

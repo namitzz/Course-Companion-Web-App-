@@ -81,9 +81,29 @@ public class StreakService {
         rewardEntity.setReward(reward);
         rewardRepository.save(rewardEntity);
 
+        // Update streak box status
         streak.setMysteryBoxAvailable(false);
         streakRepository.save(streak);
 
+        // Award XP based on reward type
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        int xpToAdd = switch (reward) {
+            case "Bonus XP" -> 30;
+            case "Double XP" -> 50;
+            case "Daily Boost" -> 20;
+            case "Extra Points" -> 15;
+            case "Secret Achievement" -> 100;
+            default -> 0;
+        };
+
+        if (xpToAdd > 0) {
+            user.addXp(xpToAdd);  // uses setXp() → triggers level update
+            userRepository.save(user);
+        }
+
         return reward;
     }
+
 }
