@@ -9,5 +9,4 @@ Currently a week before the project is due and as scrum master I am constantly c
 5. Namit (22/03/25):
 Approaching the end of the last week leading up to the due date, made sure everyone did the final Testing, no ambiguity in the code , helped in updating over UI for each member user story and made sure that we were on track to deliver the project on time.
 6. Arshdip (24/03/25):
-For the final few days as scrum master, I ensured that the project was finished/in its final stages, and during the scrum meeting made sure that each member was aware of all the required tasks before the project is completed including the sprint 2 stories being added to the user manual, the demo video being made and comments on the issue board for all stories.
-
+For the final few days of the sprint as scrum master, I ensured that the project was finished/in its final stages, and during the scrum meeting made sure that each member was aware of all the required tasks before the project is completed including the sprint 2 stories being added to the user manual, the demo video being made and comments on the issue board for all stories.
