@@ -17,7 +17,7 @@ public class Streak {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private Long userId;  // ✅ Ensure userId field exists
+    private Long userId;  //
 
     private int streakCount = 0;
     private LocalDate lastActivityDate;
