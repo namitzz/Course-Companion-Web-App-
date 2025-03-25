@@ -1,4 +1,4 @@
-# Prep For Running Group 77 Project
+# Instructions For Running Group 77 Project
 
 ## MySQL Preparation:
 - Make sure that a localhost server in MySQL is created called co2123db -
@@ -59,7 +59,10 @@
     (20,'Rust Programming for System Development', 'Explore Rust for safe and efficient system programming.'),
     (21,'Programming for System Development', 'Explore Rust for safe and efficient system programming.');
     ```
-## Intelli J / IDE preparation:
+## Intelli J / IDE Preparation:
 - Ensure that Gradle is installed (The IDE may prompt you to download it if it isn't installed already)
 - Connect the database to your IDE
 - Run the Application.java file
+
+## Browser Preparation:
+- Visit this link in browser to enter into the site: http://localhost:8080/
