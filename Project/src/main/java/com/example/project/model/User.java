@@ -127,10 +127,10 @@ public class User implements Serializable {
     }
 
     @Column(name = "xp")
-    private int xp = 0;
+    private Integer xp = 0;
 
     @Column(name = "level")
-    private int level = 1;
+    private Integer level = 1;
 
     public int getXp() {
         return xp;
