@@ -5,9 +5,8 @@ import jakarta.persistence.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-/**
- * Represents a Goal entity mapped to the "goals" table in the database.
- */
+ // Represents a Goal entity mapped to the "goals" table in the database
+
 @Entity
 @Table(name = "goals")
 public class Goal {
@@ -36,21 +35,14 @@ public class Goal {
     @Column(nullable = false) // Status is required
     private GoalStatus status;
 
-    /**
-     * Default constructor that initializes the goal with the current timestamp and sets the status to ACTIVE.
-     */
+     // Default constructor that initialises the goal with the current timestamp and sets the status to ACTIVE.
+
     public Goal() {
         this.createdAt = LocalDateTime.now();
         this.status = GoalStatus.ACTIVE;
     }
 
-    /**
-     * Constructor to initialize a goal with a specific user, title, and expiration date.
-     *
-     * @param user The user associated with the goal.
-     * @param title The title of the goal.
-     * @param expiresAt The expiration date/time of the goal.
-     */
+     // Constructor to initialise a goal with a specific user, title, and expiration date
     public Goal(User user, String title, LocalDateTime expiresAt) {
         this.user = user;
         this.title = title;
@@ -59,7 +51,7 @@ public class Goal {
         this.status = GoalStatus.ACTIVE;
     }
 
-    // ======== GETTERS AND SETTERS ========
+    // GETTERS AND SETTERS
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -82,13 +74,11 @@ public class Goal {
     public GoalStatus getStatus() { return status; }
     public void setStatus(GoalStatus status) { this.status = status; }
 
-    // ======== HELPER METHODS ========
+    // HELPER METHODS
 
     /**
      * Calculates the number of days between the creation date and expiration date.
      * If the goal has no expiration date, it uses the current date.
-     *
-     * @return The number of days.
      */
     public long getDays() {
         LocalDateTime end = (expiresAt != null) ? expiresAt : LocalDateTime.now();
@@ -99,8 +89,6 @@ public class Goal {
     /**
      * Calculates the number of hours between the creation date and expiration date.
      * Returns 0 if no expiration date is set.
-     *
-     * @return The number of hours.
      */
     public long getHours() {
         if (expiresAt != null) {
@@ -112,8 +100,6 @@ public class Goal {
     /**
      * Calculates the number of minutes between the creation date and expiration date.
      * If no expiration date is set, it uses the current date.
-     *
-     * @return The number of minutes.
      */
     public long getMinutes() {
         LocalDateTime end = (expiresAt != null) ? expiresAt : LocalDateTime.now();

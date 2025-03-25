@@ -10,65 +10,42 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/goals") // Base mapping for all goal-related endpoints
+@RequestMapping("/goals") // Base endpoint for goal operations
 public class GoalController {
 
     private final GoalService goalService;
-    private final UserRepository userRepository; // Inject UserRepository to fetch user details
+    private final UserRepository userRepository;
 
     public GoalController(GoalService goalService, UserRepository userRepository) {
         this.goalService = goalService;
         this.userRepository = userRepository;
     }
 
-    /**
-     * Handles the retrieval of all goals associated with the currently authenticated user.
-     * Categorizes goals into active, expired, and completed.
-     *
-     * @param principal Represents the currently logged-in user.
-     * @param model Holds attributes for rendering the view.
-     * @return The Thymeleaf template "goals.html" displaying goal lists.
-     */
+    // Retrieves and categorizes goals for the logged-in user
     @GetMapping
     public String getGoals(Principal principal, Model model) {
-        User user = getUserFromPrincipal(principal); // Get user from database
+        User user = getUserFromPrincipal(principal);
         model.addAttribute("activeGoals", goalService.getActiveGoals(user));
         model.addAttribute("expiredGoals", goalService.getExpiredGoals(user));
         model.addAttribute("completedGoals", goalService.getCompletedGoals(user));
         return "goals";
     }
 
-    // Displays the form for adding a new goal.
+    // Displays the add goal form
     @GetMapping("/addGoal")
     public String showAddGoalForm() {
-        return "addGoal"; // Renders addGoal form view
+        return "addGoal";
     }
 
-    /**
-     * Processes the form submission for adding a new goal.
-     *
-     * @param principal Represents the logged-in user.
-     * @param title Goal title.
-     * @param days Number of days to achieve the goal.
-     * @param hours Number of hours to achieve the goal.
-     * @param minutes Number of minutes to achieve the goal.
-     * @return Redirects back to the goals list after adding the goal.
-     */
+    // Processes goal creation and redirects to the goals list
     @PostMapping("/add")
     public String addGoal(Principal principal, @RequestParam String title,
                           @RequestParam int days, @RequestParam int hours, @RequestParam int minutes) {
-        User user = getUserFromPrincipal(principal); // Get user from database
-        goalService.addGoal(user, title, days, hours, minutes); // Calls service method to save goal
-        return "redirect:/goals"; // Redirect to goals page after adding
+        goalService.addGoal(getUserFromPrincipal(principal), title, days, hours, minutes);
+        return "redirect:/goals";
     }
 
-    /**
-     * Displays the edit goal form pre-filled with existing goal details.
-     *
-     * @param id Goal ID to be edited.
-     * @param model Holds attributes to pass data to the view.
-     * @return The Thymeleaf template "editGoal.html".
-     */
+    // Displays the edit form with existing goal details
     @GetMapping("/edit/{id}")
     public String showEditGoalForm(@PathVariable Long id, Model model) {
         goalService.getGoalById(id).ifPresent(goal -> {
@@ -78,57 +55,32 @@ public class GoalController {
             model.addAttribute("hours", timeComponents[1]);
             model.addAttribute("minutes", timeComponents[2]);
         });
-        return "editGoal"; // Renders edit goal form view
+        return "editGoal";
     }
 
-    /**
-     * Handles the submission of the goal edit form.
-     *
-     * @param id Goal ID to be updated.
-     * @param title Updated goal title.
-     * @param days Updated number of days.
-     * @param hours Updated number of hours.
-     * @param minutes Updated number of minutes.
-     * @return Redirects to goals list after updating.
-     */
+    // Handles goal updates and redirects to the goals list
     @PostMapping("/{id}/edit")
     public String editGoal(@PathVariable Long id, @RequestParam String title,
                            @RequestParam int days, @RequestParam int hours, @RequestParam int minutes) {
-        goalService.editGoal(id, title, days, hours, minutes); // Updates goal in database
-        return "redirect:/goals"; // Redirect to goals page after edit
+        goalService.editGoal(id, title, days, hours, minutes);
+        return "redirect:/goals";
     }
 
-    /**
-     * Marks a goal as complete.
-     *
-     * @param id ID of the goal to be marked complete.
-     * @return Redirects back to the goals list.
-     */
-    @PostMapping("/{id}/complete") // Using POST for updating state
+    // Marks a goal as completed
+    @PostMapping("/{id}/complete")
     public String completeGoal(@PathVariable Long id) {
-        goalService.completeGoal(id); // Calls service to mark goal as completed
-        return "redirect:/goals"; // Redirect to goals page
+        goalService.completeGoal(id);
+        return "redirect:/goals";
     }
 
-    /**
-     * Deletes a goal from the database.
-     *
-     * @param id ID of the goal to be deleted.
-     * @return Redirects back to the goals list.
-     */
-    @PostMapping("/{id}/delete") // Using POST to delete a resource
+    // Deletes a goal
+    @PostMapping("/{id}/delete")
     public String deleteGoal(@PathVariable Long id) {
-        goalService.deleteGoal(id); // Calls service to delete goal
-        return "redirect:/goals"; // Redirect to goals page
+        goalService.deleteGoal(id);
+        return "redirect:/goals";
     }
 
-    /**
-     * Helper method to fetch the authenticated user from the database.
-     *
-     * @param principal The security principal representing the logged-in user.
-     * @return The User entity retrieved from the database.
-     * @throws RuntimeException if the user is not found.
-     */
+    // Retrieves the logged-in user from the database
     private User getUserFromPrincipal(Principal principal) {
         return userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));

@@ -10,65 +10,34 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Service class responsible for managing goal-related operations:
- * - Retrieving, adding, editing, deleting, and completing goals
- * - Checking for expired goals
- */
+ // Service for managing user goals: retrieval, addition, editing, deletion, and completion.
+
 @Service
 public class GoalService {
 
     private final GoalRepository goalRepository;
 
-    /**
-     * Constructor to inject the GoalRepository.
-     *
-     * @param goalRepository The repository used to interact with the database for goal-related operations.
-     */
+    // Injects GoalRepository
     public GoalService(GoalRepository goalRepository) {
         this.goalRepository = goalRepository;
     }
 
-    /**
-     * Retrieves all active goals for the specified user.
-     *
-     * @param user The user whose active goals are to be fetched.
-     * @return A list of active goals for the user.
-     */
+    // Fetches active goals for a user
     public List<Goal> getActiveGoals(User user) {
         return goalRepository.findByUserAndStatus(user, GoalStatus.ACTIVE);
     }
 
-    /**
-     * Retrieves all expired goals for the specified user.
-     *
-     * @param user The user whose expired goals are to be fetched.
-     * @return A list of expired goals for the user.
-     */
+    // Fetches Expired goals for a user
     public List<Goal> getExpiredGoals(User user) {
         return goalRepository.findByUserAndStatus(user, GoalStatus.EXPIRED);
     }
 
-    /**
-     * Retrieves all completed goals for the specified user.
-     *
-     * @param user The user whose completed goals are to be fetched.
-     * @return A list of completed goals for the user.
-     */
+    // Fetches completed goals for a user
     public List<Goal> getCompletedGoals(User user) {
         return goalRepository.findByUserAndStatus(user, GoalStatus.COMPLETED);
     }
 
-    /**
-     * Adds a new goal for a user with the specified title and time duration.
-     *
-     * @param user   The user who is adding the goal.
-     * @param title  The title of the new goal.
-     * @param days   The number of days after which the goal will expire.
-     * @param hours  The number of hours after which the goal will expire.
-     * @param minutes The number of minutes after which the goal will expire.
-     * @return The saved goal object.
-     */
+    // Adds a goal with a specified title and expiration time
     public Goal addGoal(User user, String title, int days, int hours, int minutes) {
         // Calculate the expiration time by adding days, hours, and minutes to the current time
         LocalDateTime expiresAt = LocalDateTime.now().plusDays(days).plusHours(hours).plusMinutes(minutes);
@@ -77,16 +46,7 @@ public class GoalService {
         return goalRepository.save(goal);
     }
 
-    /**
-     * Edits an existing goal's title and expiration time.
-     *
-     * @param goalId      The ID of the goal to be edited.
-     * @param newTitle    The new title for the goal.
-     * @param newDays     The new number of days for expiration.
-     * @param newHours    The new number of hours for expiration.
-     * @param newMinutes  The new number of minutes for expiration.
-     * @return The edited goal if it exists, or an empty Optional if not found.
-     */
+    // Edits an existing goal's title and expiration time
     public Optional<Goal> editGoal(Long goalId, String newTitle, int newDays, int newHours, int newMinutes) {
         Optional<Goal> goalOpt = goalRepository.findById(goalId);
         if (goalOpt.isPresent()) {
@@ -99,12 +59,7 @@ public class GoalService {
         return goalOpt;
     }
 
-    /**
-     * Calculates the remaining time components (days, hours, minutes) until the goal expires.
-     *
-     * @param goal The goal whose time components are to be calculated.
-     * @return An array containing days, hours, and minutes remaining until the goal's expiration.
-     */
+    // Calculates the remaining time components (days, hours, minutes) until the goal expires
     public int[] calculateTimeComponents(Goal goal) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime expiresAt = goal.getExpiresAt();
@@ -120,20 +75,13 @@ public class GoalService {
         return new int[]{days, hours, minutes};
     }
 
-    /**
-     * Deletes a goal based on its ID.
-     *
-     * @param goalId The ID of the goal to be deleted.
-     */
+    // Deletes a goal based on its ID
     public void deleteGoal(Long goalId) {
         goalRepository.deleteById(goalId);
     }
 
-    /**
-     * Marks a goal as completed by setting its status to COMPLETED.
-     *
-     * @param goalId The ID of the goal to be marked as completed.
-     */
+    // Marks a goal as completed by setting its status to COMPLETED
+
     public void completeGoal(Long goalId) {
         goalRepository.findById(goalId).ifPresent(goal -> {
             goal.setStatus(GoalStatus.COMPLETED);
@@ -142,21 +90,12 @@ public class GoalService {
         });
     }
 
-    /**
-     * Retrieves a goal by its ID.
-     *
-     * @param id The ID of the goal to be retrieved.
-     * @return The goal if found, or an empty Optional if not found.
-     */
+    // Retrieves a goal by its ID
     public Optional<Goal> getGoalById(Long id) {
         return goalRepository.findById(id);
     }
 
-    /**
-     * Checks for expired goals for a given user and updates their status if expired.
-     *
-     * @param user The user whose active goals will be checked for expiration.
-     */
+    // Checks for expired goals for a given user and updates their status if expired
     public void checkExpiredGoals(User user) {
         List<Goal> activeGoals = goalRepository.findByUserAndStatus(user, GoalStatus.ACTIVE);
         for (Goal goal : activeGoals) {
