@@ -13,5 +13,13 @@ public class ProgressBar {
     private Long id;
 
     private String courseName;
-    private int progressPercentage; // 0-100% Progress
+    private int totalLessons;
+    private int completedLessons;
+
+    public int getProgressPercentage() {
+        return (int) ((double) completedLessons / totalLessons * 100);
+    }
+
+    public void setProgressPercentage(int progressPercentage) {
+    }
 }

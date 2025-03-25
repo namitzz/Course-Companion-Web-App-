@@ -16,4 +16,16 @@ public class ProgressBarService {
     public List<ProgressBar> getAllProgress() {
         return repository.findAll();
     }
+
+    public long getCompletedCoursesCount() {
+        return repository.findAll().stream()
+                .filter(course -> course.getProgressPercentage() == 100) // Fully completed courses
+                .count();
+    }
+
+    public long getOngoingCoursesCount() {
+        return repository.findAll().stream()
+                .filter(course -> course.getProgressPercentage() < 100) // Courses still in progress
+                .count();
+    }
 }
