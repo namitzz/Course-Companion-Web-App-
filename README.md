@@ -61,6 +61,7 @@
     ```
 ## Intelli J / IDE Preparation:
 - Ensure that Gradle is installed (The IDE may prompt you to download it if it isn't installed already)
+  - Gradle JVM: Amazon Corretto 21.0.6 (corretto-21)
 - Connect the database to your IDE
 - Run the Application.java file
 
