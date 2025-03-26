@@ -133,7 +133,7 @@ public class User implements Serializable {
     private Integer level = 1;
 
     public int getXp() {
-        return xp;
+        return xp!= null ? xp : 0;
     }
 
     public void setXp(int xp) {
