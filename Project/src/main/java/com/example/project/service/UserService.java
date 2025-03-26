@@ -7,6 +7,7 @@ import com.example.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -92,12 +93,30 @@ public class UserService {
         User user = getUserById(userId);
 
         CompletedCourse completedCourse = new CompletedCourse();
+
         completedCourse.setUser(user);
+
         completedCourse.setCourse(course);
 
+
+
         user.getCompletedCourses().add(completedCourse);
+
         user.addXp(50); // or any reward logic you want
 
+
+
         userRepository.save(user);
+
     }
+
+
+
+    public List<User> getAllUsers() {
+
+        return userRepository.findAll();
+
+    }
+
 }
+
